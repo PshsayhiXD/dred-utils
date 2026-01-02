@@ -1,0 +1,9 @@
+{
+  "displayName": "Fake Badge",
+  "id": "fakebadge",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Adds fake badges to users",
+  "main": "index.js",
+  "configPath": "PLUGIN.fakebadge"
+}

@@ -1,0 +1,4 @@
+.rgbtext {
+  animation: rgb 1.25s infinite;
+  display: inline-block;
+}

@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "DredUtils",
+  "description": "Quality-of-life mod for drednot.io",
+  "version": "0.1.0",
+  "icons": {
+    "32": "icon/icon32.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://drednot.io/*"],
+      "js": ["dist/content.js"],
+      "css": ["dist/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": ["storage"],
+  "host_permissions": ["https://*.drednot.io/*"],
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "bridge/pageMain.js",
+        "bridge/pageBridge.js",
+        "utils/*.js",
+        "asset/fontawesome/css/all.css",
+        "asset/fontawesome/webfonts/*",
+        "feature/*",
+        "storage/OPFS.js",
+        "storage/config.js",
+        "plugin_list.json",
+        "ui/*.css",
+        "ui/*.js"
+      ],
+      "matches": ["https://drednot.io/*"]
+    }
+  ]
+}

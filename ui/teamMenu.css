@@ -1,0 +1,11 @@
+#team_menu {
+  border-radius: 20px !important;
+  display: block !important;
+  opacity: 1;
+  transition: opacity 300ms, transform 250ms;
+}
+#team_menu[style='display: none;'],
+#team_menu.hidden {
+  opacity: 0;
+  transform: rotateX(90deg);
+}

@@ -1,0 +1,9 @@
+{
+  "displayName": "Motd Backup",
+  "id": "motdbackup",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Adds save/load For motd!",
+  "main": "index.js",
+  "configPath": "PLUGIN.motdbackup"
+}

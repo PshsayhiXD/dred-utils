@@ -1,0 +1,128 @@
+#shipyard-ships .shipyard-bin {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+  padding: 12px;
+}
+.shipyard-item, .shipyard-bin > button {
+  position: relative;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,.45);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.shipyard-item:hover, .shipyard-bin > button:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 26px rgba(0,0,0,.65);
+}
+.shipyard-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,.75) 30%,
+    rgba(0,0,0,.15) 60%,
+    transparent
+  );
+  pointer-events: none;
+}
+.sy-title {
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  right: 10px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sy-title h3 {
+  font-size: 14px;
+  line-height: 1.15;
+  margin: 0;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.sy-crew {
+  font-size: 12px;
+  opacity: .85;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.shipyard-item > .sy-id {
+  position: absolute !important;
+  bottom: auto !important;
+  right: auto !important;
+}
+.shipyard-item > .sy-crew {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: auto !important;
+}
+.shipyard-item:hover::before {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 14px;
+  background: rgba(0,0,0,.25);
+  z-index: 3;
+}
+.shipyard-item .tip {
+  display: none;
+}
+.shipyard-bin > button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  background-color: #4CAF50;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,.45);
+  transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+  border: none;
+  overflow: hidden;
+}
+.shipyard-bin > button:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 26px rgba(0,0,0,.65);
+  background-color: #45a049;
+}
+.shipyard-bin > button i {
+  font-size: 48px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.shipyard-bin > button > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+.shipyard-bin > button.btn-pink {
+  background-color: #e91e63;
+}
+.shipyard-bin > button.btn-pink:hover {
+  background-color: #d81b60;
+}

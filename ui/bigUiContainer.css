@@ -1,0 +1,12 @@
+#big-ui-container {
+  transition: visibility 0s, opacity 200ms linear, scale 300ms;
+  visibility: visible;
+  opacity: 1;
+}
+#big-ui-container[style='display: none;'] {
+  display: block !important;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 200ms, opacity 200ms linear, scale 300ms;
+  scale: .5;
+}

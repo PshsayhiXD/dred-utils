@@ -1,0 +1,24 @@
+#motd {
+  transition: max-height 1s;
+  border-bottom-left-radius: 10px !important;
+}
+#motd-content[style='display: none;'] {
+  display: block !important;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 200ms, opacity 200ms linear, max-height 300ms, max-width 300ms;
+  max-height: 0;
+  max-width: 50px;
+  overflow: hidden;
+  pointer-events: none;
+}
+#motd-content {
+  max-width: 500px;
+  max-height: 500px;
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s, opacity 200ms linear, max-height 300ms;
+}
+#motd-text {
+  transition: max-height 300ms;
+}

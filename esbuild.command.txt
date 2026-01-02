@@ -1,0 +1,3 @@
+esbuild fontawesome.css --bundle --minify --outfile=dist/fontawesome.css --loader:.woff2=file --asset-names=webfonts/[name]
+
+esbuild index.css --bundle --minify --outfile=dist/content.css

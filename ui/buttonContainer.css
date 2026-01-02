@@ -1,0 +1,8 @@
+.button-container {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  margin: 0 50px !important;
+  z-index: 20 !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+}
