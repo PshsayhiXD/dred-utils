@@ -1,0 +1,10 @@
+{
+  "displayName": "Better Team Player",
+  "id": "betterteamplayer",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Bored of the old team menu?",
+  "main": "index.js",
+  "configPath": "PLUGIN.betterteamplayer",
+  "css": "renderOverview.css"
+}

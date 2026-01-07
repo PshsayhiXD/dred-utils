@@ -1,0 +1,22 @@
+p {
+  position: relative;
+}
+
+.replyBtn {
+  all: unset !important;
+  position: absolute !important;
+  right: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  padding: 2px 6px !important;
+  font-size: 12px !important;
+  cursor: pointer !important;
+}
+
+p:hover .replyBtn {
+  opacity: 0.8;
+}
+
+.replyBtn:hover {
+  opacity: 1;
+}

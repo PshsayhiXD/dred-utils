@@ -5,5 +5,6 @@
   "author": "Pshsayhi",
   "description": "Adds save/load For motd!",
   "main": "index.js",
-  "configPath": "PLUGIN.motdbackup"
+  "configPath": "PLUGIN.motdbackup",
+  "css": "motdBackup.css"
 }

@@ -1,0 +1,39 @@
+#crew_overview {
+  margin: 12px 0;
+  padding: 14px 16px;
+  background: #1a1e25;
+  border: 1px solid #2b3340;
+  border-radius: 8px;
+  color: #e6e9ef;
+  font-family: system-ui, "Segoe UI", Arial, sans-serif;
+  font-size: 16px;
+}
+
+.crew-overview-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.crew-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px 16px;
+}
+
+.crew-overview-grid div b {
+  display: inline-block;
+}
+
+.crew-overview-filters {
+  margin-top: 14px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.crew-overview-filters input[type="text"] {
+  flex: 1;
+  min-width: 140px;
+}

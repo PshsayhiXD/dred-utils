@@ -1,0 +1,10 @@
+{
+  "displayName": "Chat Reply",
+  "id": "chatreply",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Adds a reply button to chat messages.",
+  "main": "index.js",
+  "configPath": "PLUGIN.chatreply",
+  "css": "chatReply.css"
+}

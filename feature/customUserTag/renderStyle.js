@@ -1,4 +1,4 @@
-import { team_players_codes } from "../../utils/constants.js";
+import { team_players_inner_codes } from "../../utils/constants.js";
 
 /**
  * Render rainbow styling on user tags.
@@ -9,8 +9,8 @@ import { team_players_codes } from "../../utils/constants.js";
 export const renderUserTagStyle = (resolvedType, styles) => {
   const nodes =
     resolvedType === "all"
-      ? team_players_codes()
-      : [...team_players_codes()].filter((e) =>
+      ? team_players_inner_codes()
+      : [...team_players_inner_codes()].filter((e) =>
           e.textContent.includes(resolvedType)
         );
   nodes.forEach((el, i) => {

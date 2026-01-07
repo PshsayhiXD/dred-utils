@@ -1,0 +1,38 @@
+.motd-backup-overlay,
+.motd-preview-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.motd-backup-modal,
+.motd-preview-modal {
+  background: #111;
+  padding: 12px;
+  border-radius: 6px;
+  width: 420px;
+}
+.motd-preview-modal {
+  width: 70%;
+  max-height: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.motd-preview-body {
+  flex: 1;
+  overflow: auto;
+  white-space: pre-wrap;
+  user-select: text;
+  background: #1b1b1b;
+  padding: 8px;
+}
+.motd-backup-modal,
+.motd-preview-modal,
+.motd-backup-modal *,
+.motd-preview-modal * {
+  color: #e6e6e6;
+}

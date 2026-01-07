@@ -15,7 +15,19 @@ export const defaultConfig = {
     },
     motdbackup: {
       enabled: true,
-    }
+    },
+    betterserveroption: {
+      enabled: true,
+    },
+    betterteamplayer: { 
+      enabled: true,
+    },
+    patchhidebutton: { 
+      enabled: true, 
+    },
+    chatreply: { 
+      enabled: true, 
+    },
   },
 };
 

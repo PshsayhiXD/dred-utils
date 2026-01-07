@@ -1,0 +1,28 @@
+body button,
+body .btn {
+  display: inline-block;
+  border: none;
+  box-shadow: 0 3px #333;
+  transition: transform 150ms, box-shadow 150ms, visibility 0s, opacity 200ms;
+}
+button[style='display: none;'] {
+  display: block !important;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 200ms, opacity 200ms;
+  pointer-events: none;
+}
+button:hover,
+body .btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px #333;
+}
+button:active,
+body .btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px #333;
+}
+button a {
+  text-decoration: none !important;
+  color: white !important;
+}

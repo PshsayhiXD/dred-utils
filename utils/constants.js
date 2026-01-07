@@ -5,13 +5,12 @@ export const window_container = document.getElementById("window-container");
 export const window_ui_left_container = window_container.querySelector("#ui-container-left");
 
 export const big_ui_container = document.getElementById("big-ui-container");
+export const window_dark_container = () => big_ui_container.querySelector(".window.dark");
 export const button_container = document.querySelector(".button-container");
 export const content_bottom_container = document.getElementById("content-bottom");
 export const game_container = document.getElementById("game-container");
 export const canvas = document.getElementById("canvas-game");
 export const station_ui_container = window_container.querySelector("#station-ui");
-export const team_manager_button = button_container.querySelector("#team_manager_button");
-export const team_menu_container = document.getElementById("team_menu");
 export const pui_container = window_container.querySelector("#pui");
 export const item_ui_container = document.getElementById("item-ui-container");
 
@@ -31,18 +30,40 @@ export const motd_content = motd_container.querySelector("#motd-content");
 export const motd_text = motd_content.querySelector("#motd-text");
 export const motd_edit_btn = motd_content.querySelector("#motd-edit-button")
 export const motd_toggle = motd_container.querySelector("#motd-toggle");
-export const motd_textarea = motd_text.querySelector("textarea");
+export const motd_textarea = () =>
+  motd_edit.querySelector("textarea");
 export const motd_save_btn = motd_edit.querySelector(".btn-green");
 export const motd_discard_btn = motd_edit.querySelector(".btn-red");
 
-export const team_players_inner = document.getElementById("team_players_inner");
-/**
- * @returns {HTMLElement}
- */
-export const team_players_codes = () =>
-  team_players_inner?.querySelectorAll("td > code") || [];
+export const team_menu_container = document.getElementById("team_menu");
+export const team_manager_button = button_container.querySelector("#team_manager_button");
+export const team_players = () => team_menu_container?.querySelector("#team_players");
+export const team_log = () => team_players()?.querySelector("#team_log");
+export const team_players_inner = () => team_players()?.querySelector("#team_players_inner");
+export const team_players_inner_codes = () => team_players_inner()?.querySelectorAll("td > code") || [];
+export const team_players_inner_tbody = () => team_players_inner()?.querySelector("tbody");
+
+
+export const server_section = () => window_dark_container()?.querySelector("section");
+export const server_select = () => server_section()?.querySelector("select");
+export const server_cards_container = () => server_section()?.querySelector(".serverCards");
+
 
 // aliases
 export const ui_container_left = window_ui_left_container;
 export const team_button = team_manager_button;
-export const team_menu = team_menu_container;
+export const team_player_container = team_menu_container;
+
+
+// =======================
+//        CONSTANTS
+// =======================
+/**
+ * Predefined color for ranks.
+ * @readonly
+ * @type {Object.<string,string>}
+ */
+export const colors = {
+  owner:"#b388ff", captain:"#55d7ff", crew:"#ffd24d", guest:"#9aa0a6",
+  offline:"#7a7f87", banned:"#ff3b3b", online:"#4caf50"
+};

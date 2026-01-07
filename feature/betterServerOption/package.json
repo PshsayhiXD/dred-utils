@@ -1,0 +1,10 @@
+{
+  "displayName": "Better Server Option",
+  "id": "betterserveroption",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Restyle the server select option.",
+  "main": "index.js",
+  "configPath": "PLUGIN.betterserveroption",
+  "css": "serverUi.css"
+}

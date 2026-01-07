@@ -1,0 +1,9 @@
+{
+  "displayName": "Patch Hide Button",
+  "id": "patchhidebutton",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Make the hide button unusable.",
+  "main": "index.js",
+  "configPath": "PLUGIN.patchhidebutton"
+}

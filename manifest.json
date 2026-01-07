@@ -14,8 +14,8 @@
       "run_at": "document_idle"
     }
   ],
-  "permissions": ["storage"],
-  "host_permissions": ["https://*.drednot.io/*"],
+  "permissions": ["storage", "declarativeNetRequest"],
+  "host_permissions": ["https://*.drednot.io/*", "https://drednot.io/*"],
   "action": {
     "default_popup": "popup/popup.html"
   },
@@ -36,5 +36,14 @@
       ],
       "matches": ["https://drednot.io/*"]
     }
-  ]
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  }
 }

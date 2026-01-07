@@ -33,9 +33,9 @@ export const postMessageToPageBridge = (message, from = null) => {
 
 window.addEventListener("message", e => {
   if (e.source !== window) return;
-  const { type, from: msgFrom } = e.data || {};
+  const { type, from: msgFrom, payload } = e.data || {};
   if (!type || !listeners.has(type)) return;
   listeners.get(type).forEach(({ callback, from }) => {
-    if (!from || from === msgFrom) callback(e.data);
+    if (!from || from === msgFrom) callback(payload);
   });
 });
