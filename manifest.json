@@ -27,7 +27,7 @@
         "utils/*.js",
         "asset/fontawesome/css/all.css",
         "asset/fontawesome/webfonts/*",
-        "feature/*",
+        "plugins/*",
         "storage/OPFS.js",
         "storage/config.js",
         "plugin_list.json",

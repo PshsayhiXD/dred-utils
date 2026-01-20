@@ -59,7 +59,8 @@ export const isClientRegistered = async () => {
 export const getAllUserFromChat = async () => {
   const usernames = [];
   const roles = {};
-  const chatParagraphs = chat_content.querySelectorAll("p");
+  const chatContent = await chat_content();
+  const chatParagraphs = chatContent?.querySelectorAll("p") || [];
   chatParagraphs.forEach((p) => {
     const usernameEl = p.querySelector("bdi");
     const roleEl = p.querySelector("span");
@@ -93,10 +94,12 @@ export const getCurrentShipId = () => {
  * @param {string} content Motd content.
  * @returns {boolean} True if success.
  */
-export const editMotd = (content) => {
-  if (motd_textarea().value === content || !content) return false;
-  motd_edit_btn.click();
-  motd_textarea().value = (content);
+export const editMotd = async (content) => {
+  const textarea = await motd_textarea();
+  if (textarea?.value === content || !content) return false;
+  const editBtn = await motd_edit_btn();
+  editBtn?.click();
+  if (textarea) textarea.value = content;
   saveMotd(true);
   return true;
 }
@@ -111,15 +114,6 @@ export const getSelectedServer = () => {
   if (!opt) return null;
   const [name, players, ping] = opt.text.replace(/^\d+\s-\s/, "").split(" - ");
   return { name, players, ping, value: opt.value };
-};
-
-/**
- * Gets all chat message elements inside the chat content container.
- * @returns {HTMLElement[]} An array of <p> elements representing chat messages.
- */
-export const getAllChatMessage = () => {
-  if (!chat_content) return [];
-  return [...chat_content.querySelectorAll("p")];
 };
 
 /**
@@ -164,6 +158,40 @@ export const extractChatMessage = messageEl => {
 };
 
 /**
+ * Gets the latest chat message.
+ * @returns {{ element: HTMLParagraphElement, role: string|null, username: string|null, badges: Array, message: string|null }|null}
+ */
+export const getLatestChat = async () => {
+  const chatContent = await chat_content();
+  if (!chatContent) return null;
+  const latestChat = chatContent.lastElementChild;
+  if (!latestChat) return null;
+  return {
+    element: latestChat,
+    role: extractChatRole(latestChat),
+    username: extractChatUsername(latestChat),
+    badges: extractChatBadges(latestChat),
+    message: extractChatMessage(latestChat),
+  };
+};
+
+/**
+ * Gets all chat messages with extracted metadata.
+ * @returns {Array<{ element: HTMLParagraphElement, role: string|null, username: string|null, badges: Array, message: string|null }>}
+ */
+export const getAllChatMessage = async () => {
+  const chatContent = await chat_content();
+  if (!chatContent) return [];
+  return [...chatContent.querySelectorAll("p")].map(el => ({
+    element: el,
+    role: extractChatRole(el),
+    username: extractChatUsername(el),
+    badges: extractChatBadges(el),
+    message: extractChatMessage(el),
+  }));
+};
+
+/**
  * Collect table row data.
  * @param {HTMLElement} tbody - Table body element containing rows.
  * @returns {Array<Object>} - Array of objects with row data:
@@ -194,3 +222,42 @@ export const collectTeamPlayer = (tbody) =>
       : "guest";
     return { r, name, online, play, rank, banned, owner, captainLevel };
   });
+
+/**
+ * Returns the first half of the string if both halves are identical; otherwise returns the original string.
+ * @param {string} text - The username text to normalize.
+ * @returns {string} The normalized username with duplicated halves collapsed, or the original text.
+ */
+export const isDuplicatedText = text => {
+  const half = text.length / 2;
+  const isDuplicate = text.slice(0, half) === text.slice(half);
+  return {
+    text: isDuplicate ? text.slice(0, half) : text,
+    boolean: isDuplicate
+  };
+};
+
+/**
+ * Capture a canvas to a JPEG blob URL.
+ * @param {HTMLCanvasElement} canvas - The source canvas (WebGL or 2D).
+ * @param {number} [scale=0.5] - Scale factor (0.1–1) for lower resolution.
+ * @param {number} [quality=0.6] - JPEG quality (0–1) for more compression.
+ * @param {boolean} [autoRevoke=false] - Whether to auto-revoke the URL after use.
+ * @returns {Promise<string>} - Blob URL of the captured image.
+ */
+const captureCanvas = (canvas, scale = 0.5, quality = 0.6, autoRevoke = false) => {
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => {
+      const offscreen = document.createElement("canvas");
+      const offCtx = offscreen.getContext("2d");
+      offscreen.width = canvas.width * scale;
+      offscreen.height = canvas.height * scale;
+      offCtx.drawImage(canvas, 0, 0, offscreen.width, offscreen.height);
+      offscreen.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        resolve(url);
+        if (autoRevoke) setTimeout(() => URL.revokeObjectURL(url), 5000);
+      }, "image/jpeg", quality);
+    });
+  });
+};

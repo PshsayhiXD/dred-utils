@@ -1,0 +1,60 @@
+#crew_overview {
+  margin:12px 0;
+  padding:14px 16px;
+  background:#1a1e25;
+  border:1px solid #2b3340;
+  border-radius:8px;
+  color:#e6e9ef;
+  font-family:system-ui,"Segoe UI",Arial,sans-serif;
+  font-size:16px;
+}
+
+.crew-overview-title {
+  font-size:18px;
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.crew-overview-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px 16px;
+}
+
+.crew-overview-grid div b {
+  display:inline-block;
+}
+
+.crew-overview-filters {
+  margin-top:14px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.crew-overview-filters input[type="text"] {
+  flex:1;
+  min-width:140px;
+}
+
+#team_players_inner td:first-child {
+  border-left:4px solid transparent;
+}
+
+#team_players_inner tr.crew-offline td:first-child {
+  border-left-color:#666;
+}
+
+#team_players_inner tr.crew-banned td:first-child {
+  border-left-color:#c33;
+}
+
+#team_players_inner tr[data-rank="owner"]   td:first-child { border-left-color:#b388ff; }
+#team_players_inner tr[data-rank="captain"] td:first-child { border-left-color:#55d7ff; }
+#team_players_inner tr[data-rank="crew"]    td:first-child { border-left-color:#ffd24d; }
+#team_players_inner tr[data-rank="guest"]   td:first-child { border-left-color:#9aa0a6; }
+
+#team_players_inner tr.crew-dim td {
+  opacity:0.45;
+}

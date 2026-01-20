@@ -1,32 +1,9 @@
 "use strict";
 
-const pathCache = new WeakMap();
-
-export const getPath = el => {
-  if (!(el instanceof Element)) return null;
-  if (pathCache.has(el)) return pathCache.get(el);
-  const parts = [];
-  let n = el;
-  while (n && parts.length < 5) {
-    let p = n.tagName.toLowerCase();
-    if (n.id) p += `#${n.id}`;
-    else if (n.classList?.length) p += `.${[...n.classList].slice(0, 2).join(".")}`;
-    parts.unshift(p);
-    n = n.parentElement;
-  }
-  const path = parts.join(">");
-  pathCache.set(el, path);
-  return path;
-};
-
-export const getParentPath = el => {
-  const p = el?.parentElement || el?.parentNode;
-  return p instanceof Element ? getPath(p) : null;
-};
+import { getPath, getParentPath } from "../utils/elements/dom.js";
 
 /**
  * Starts observing DOM mutations and posts them to the page bridge.
- * Uses disconnect/reconnect to avoid self-triggered observer loops.
  * @async
  * @param {Element|Array<Element>|string|Array<string>} [targets=document.body] Targets to observe.
  * @param {Object} cfg Configuration object.
@@ -45,23 +22,32 @@ export const startMutationObserver = async (targets = document.body, cfg = {}) =
 
   let queued = false;
   let queue = [];
+  let suppress = false;
 
   const observer = new MutationObserver(mutations => {
+    if (suppress) return;
     queue.push(...mutations);
     if (queued) return;
     queued = true;
     requestAnimationFrame(() => {
       queued = false;
+      suppress = true;
       observer.disconnect();
-      flush();
-      targets.forEach(t =>
-        observer.observe(t, {
-          childList: true,
-          subtree: true,
-          attributes: true,
-          characterData: true
-        })
-      );
+      try {
+        flush();
+      } finally {
+        suppress = false;
+        if (!cfg.once) {
+          targets.forEach(t =>
+            observer.observe(t, {
+              childList: true,
+              subtree: true,
+              //attributes: true,
+              characterData: true
+            })
+          );
+        }
+      }
     });
   });
 
@@ -87,7 +73,7 @@ export const startMutationObserver = async (targets = document.body, cfg = {}) =
     observer.observe(t, {
       childList: true,
       subtree: true,
-      attributes: true,
+      //attributes: true,
       characterData: true
     })
   );

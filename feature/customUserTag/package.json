@@ -1,9 +1,0 @@
-{
-  "displayName": "Custom User Tag",
-  "id": "customusertag",
-  "version": "1.0.0",
-  "author": "Pshsayhi",
-  "description": "Add custom style to people tag.",
-  "main": "index.js",
-  "configPath": "PLUGIN.customusertag"
-}

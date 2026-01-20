@@ -25,7 +25,16 @@ export const getPluginStates = async () => {
   const plugins = await PLUGIN_LIST();
   const result = {};
   for (const dir of plugins) {
-    result[dir] = getByPath(config, `PLUGIN.${dir}.enabled`) !== false;
+    const userSetting = getByPath(config, `PLUGIN.${dir}.enabled`);
+    if (userSetting !== undefined) result[dir] = userSetting;
+    else {
+      try {
+        const meta = await fetch(chrome.runtime.getURL(`plugins/${dir}/package.json`)).then(r => r.json());
+        result[dir] = meta.defaultEnabled !== false;
+      } catch {
+        result[dir] = true; 
+      }
+    }
   }
   return result;
 };
@@ -49,10 +58,11 @@ export const togglePluginState = async (pluginDir) => {
 };
 
 /**
- * Load enabled plugins.
+ * Loads and injects enabled plugins based on their metadata.
+ * Supports single or multiple entry scripts and stylesheets.
  * @async
- * @param {string[]} plugins List of plugin directory names.
- * @returns {Promise<void>} Resolves after plugin loading.
+ * @param {Array<string>} plugins - List of plugin directory names.
+ * @returns {Promise<void>} Resolves when plugin loading completes.
  */
 export const loadPlugins = async (plugins) => {
   if (!Array.isArray(plugins)) throw new TypeError("[LOADPLUGINS] plugins must be an array.");
@@ -60,9 +70,11 @@ export const loadPlugins = async (plugins) => {
   for (const dir of plugins) {
     if (!states[dir]) continue;
     try {
-      const meta = await fetch(chrome.runtime.getURL(`feature/${dir}/package.json`)).then(r => r.json());
-      if (meta.main || meta.index) injectPageScript(`feature/${dir}/${meta.main || meta.index}`);
-      if (meta.css) injectPageCSS(`feature/${dir}/${meta.css}`);
+      const meta = await fetch(chrome.runtime.getURL(`plugins/${dir}/package.json`)).then(r => r.json());
+      const mains = [].concat(meta.main || meta.index || []);
+      const styles = [].concat(meta.css || []);
+      for (const m of mains) injectPageScript(`plugins/${dir}/${m}`);
+      for (const c of styles) injectPageCSS(`plugins/${dir}/${c}`);
     } catch {}
   }
 };

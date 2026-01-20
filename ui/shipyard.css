@@ -126,3 +126,7 @@
 .shipyard-bin > button.btn-pink:hover {
   background-color: #d81b60;
 }
+.shipyard-ad {
+  visibility: hidden !important;
+  display: none !important;
+}

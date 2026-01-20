@@ -1,0 +1,9 @@
+{
+  "displayName": "Motd Counter",
+  "id": "motdcounter",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Add a text indicator to motd when editing.",
+  "main": "index.js",
+  "configPath": "PLUGIN.motdcounter"
+}

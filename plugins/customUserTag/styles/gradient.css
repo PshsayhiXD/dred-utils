@@ -1,0 +1,44 @@
+.static-gradient {
+  background:linear-gradient(90deg,#ff3b3b,#ffd24d,#4cd964,#55d7ff,#b388ff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+@keyframes gradientShift {
+  0% { background-position:0% 50%; }
+  100% { background-position:200% 50%; }
+}
+.gradient-anim {
+  background:linear-gradient(
+    90deg,
+    #ff3b3b,
+    #ffd24d,
+    #4cd964,
+    #55d7ff,
+    #b388ff
+  );
+  background-size:200% 200%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  animation:gradientShift 2.4s linear infinite;
+}
+
+.gradient-char {
+  display:inline-block;
+  background:linear-gradient(
+    90deg,
+    #ff3b3b,
+    #ffd24d,
+    #4cd964,
+    #55d7ff,
+    #b388ff
+  );
+  background-size:200% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  animation:gradientShift 2.2s linear infinite;
+  will-change:background-position;
+}

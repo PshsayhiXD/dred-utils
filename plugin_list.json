@@ -2,8 +2,10 @@
   "fakeBadge",
   "customUserTag",
   "motdBackUp",
+  "motdCounter",
   "betterServerOption",
   "betterTeamPlayer",
   "chatReply",
+  "chatTimestamp",
   "patchHideButton"
 ]

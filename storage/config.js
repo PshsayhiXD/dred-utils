@@ -1,34 +1,10 @@
 "use strict";
 
 /**
- * Default config (unchangeable metadata in package.json).
- * Will default to these value if storage didn't exist: key | value.
  * @readonly
  */
 export const defaultConfig = {
-  PLUGIN: {
-    fakebadge: {
-      enabled: true,
-    },
-    customusertag: {
-      enabled: true,
-    },
-    motdbackup: {
-      enabled: true,
-    },
-    betterserveroption: {
-      enabled: true,
-    },
-    betterteamplayer: { 
-      enabled: true,
-    },
-    patchhidebutton: { 
-      enabled: true, 
-    },
-    chatreply: { 
-      enabled: true, 
-    },
-  },
+  PLUGIN: {}
 };
 
 /**
@@ -47,5 +23,10 @@ export const getConfig = async () => {
  * @returns {Promise<void>} Resolves after update.
  */
 export const setConfig = async (values) => {
-  await chrome.storage.local.set(values);
+  const current = await getConfig();
+  const merged = {
+    ...current,
+    PLUGIN: { ...current.PLUGIN, ...values.PLUGIN }
+  };
+  await chrome.storage.local.set(merged);
 };

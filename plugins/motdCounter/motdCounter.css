@@ -1,0 +1,10 @@
+.motdCounter {
+  margin-left: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: Segoe UI, Roboto, Arial, sans-serif;
+  letter-spacing: 0.2px;
+  user-select: none;
+  transform: translateY(-10px);
+  transition: color 60ms linear;
+}

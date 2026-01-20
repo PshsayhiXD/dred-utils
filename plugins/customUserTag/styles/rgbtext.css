@@ -1,0 +1,11 @@
+@keyframes hueSpin {
+  from { filter:hue-rotate(0deg); }
+  to { filter:hue-rotate(360deg); }
+}
+
+.rgbtext {
+  display:inline-block;
+  color:#F00;
+  animation:hueSpin 1.6s linear infinite;
+  will-change:filter;
+}

@@ -1,3 +1,18 @@
+const boundEls = new WeakSet();
+
+/**
+ * Binds a click event listener to an element only once.
+ * Prevents duplicate bindings by tracking elements in a WeakSet.
+ * @param {Element} el The DOM element to bind the event listener to.
+ * @param {Function} fn The function to invoke when the element is clicked.
+ * @returns {void} Does nothing if the element is invalid or already bound.
+ */
+export const bindOnce = (el, fn) => {
+  if (!(el instanceof Element) || boundEls.has(el)) return;
+  el.addEventListener("click", fn);
+  boundEls.add(el);
+};
+
 /**
  * Resolve a dot-path value from an object.
  * @param {Object} obj The source object.
