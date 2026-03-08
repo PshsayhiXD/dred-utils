@@ -17,27 +17,27 @@ export const qs = (selector, root=document) => root.querySelector(selector);
 export const qsa = (selector, root=document) => [...root.querySelectorAll(selector)];
 
 /**
- * Waits until a descendant element matching the selector exists inside the given element.
- * @param {ParentNode} el The parent element or document to observe.
- * @param {string} sel The CSS selector to wait for.
- * @param {number} timeout The maximum wait time in milliseconds.
- * @returns {Promise<Element>} The resolved matching element.
+ * Waits for an element matching a selector to appear inside a root element.
+ * @param {ParentNode} el The root element to observe.
+ * @param {string} sel The CSS selector to search for.
+ * @param {number} timeout The timeout in milliseconds before resolving null.
+ * @returns {Promise<Element|null>} The found element or null if the timeout expires.
  */
-export const waitForElement = (el = document, sel, timeout = 0) => new Promise((res, rej) => {
+export const waitForElement = (el = document, sel, timeout = 0) => new Promise(res => {
   const found = el.querySelector(sel);
   if (found) return res(found);
   const obs = new MutationObserver(() => {
-    const found = el.querySelector(sel);
-    if (!found) return;
+    const node = el.querySelector(sel);
+    if (!node) return;
     obs.disconnect();
-    res(found);
+    if (timer) clearTimeout(timer);
+    res(node);
   });
   obs.observe(el, { childList: true, subtree: true });
-  if (!timeout) return;
-  setTimeout(() => {
+  const timer = timeout ? setTimeout(() => {
     obs.disconnect();
-    rej(new Error("Timeout waiting for element"));
-  }, timeout);
+    res(null);
+  }, timeout) : 0;
 });
 
 /**
