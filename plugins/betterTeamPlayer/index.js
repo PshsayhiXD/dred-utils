@@ -12,7 +12,7 @@ const bound = new WeakSet();
 
 const bindOverview = async btn => {
   if (!(btn instanceof Element) || bound.has(btn)) return;
-  btn.addEventListener("click", async () => {
+  const handler = async () => {
     const tbody = await team_players_inner_tbody();
     const menu = await team_menu_container();
     if (!tbody || !menu) return;
@@ -25,11 +25,13 @@ const bindOverview = async btn => {
         : menu.appendChild(box);
     }
     renderOverview(box, tbody);
-  });
+    const crewBtn = await team_menu_crew_control_btn();
+    if (crewBtn && !bound.has(crewBtn)) bindOverview(crewBtn);
+  };
+  btn.addEventListener("click", handler);
   bound.add(btn);
 };
 
-(async () => {
+(() => {
   bindOverview(team_manager_button());
-  bindOverview(await team_menu_crew_control_btn());
 })();
