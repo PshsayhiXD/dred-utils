@@ -76,7 +76,7 @@ export const motd_discard_btn = async () =>
 // =======================
 export const team_menu_container = async () =>
   document.getElementById("team_menu") ||
-  (await waitForElement(document, "#team_menu"));
+  await waitForElement(document, "#team_menu", 5000);
 
 export const team_manager_button = () =>
   button_container.querySelector("#team_manager_button") || null;
