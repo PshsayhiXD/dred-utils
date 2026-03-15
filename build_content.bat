@@ -1,3 +1,2 @@
 @echo off
-npx webpack
-pause
+cmd /k "npx webpack"

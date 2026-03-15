@@ -4,7 +4,8 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 export default {
   mode: "production",
   entry: {
-    content: "./content.js"
+    content: "./content.js",
+    plugins: "./utils/plugins.js",
   },
   output: {
     filename: "[name].js",
