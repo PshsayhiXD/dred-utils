@@ -1,0 +1,10 @@
+{
+  "displayName": "Better Ship Loading",
+  "id": "bettershiploading",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Adds a spinning animation to the loading screen.",
+  "main": "index.js",
+  "configPath": "PLUGIN.bettershiploading",
+  "css": "loading.css"
+}
