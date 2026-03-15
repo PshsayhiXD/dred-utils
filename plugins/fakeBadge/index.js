@@ -3,6 +3,7 @@ import { chat_container } from "../../utils/constants.js";
 import { createAddUserBadgeBtn } from "./elements/addUserBadgeBtn.js";
 import { createAddBadgeSelect } from "./elements/addUserBadgeSelect.js";
 let lastOpenState = null;
+/*
 addListener("domMutated", async () => {
   const chatContainer = await chat_container();
   if (!chatContainer) return;
@@ -20,3 +21,4 @@ addListener("domMutated", async () => {
   if (isOpen && lastOpenState === false && typeof selectEl.reloadUsers === "function") await selectEl.reloadUsers();
   lastOpenState = isOpen;
 }, "chatContent");
+*/

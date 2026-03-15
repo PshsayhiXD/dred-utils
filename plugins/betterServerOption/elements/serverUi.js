@@ -1,17 +1,19 @@
 import { createElement } from "../../../utils/elements/dom.js";
-import { server_select, server_section } from "../../../utils/constants.js";
+import { server_select } from "../../../utils/constants.js";
 
 /**
+ * @async
  * Creates the server cards container for the server UI.
  * @returns {{serverCards: HTMLElement, id: string}|null} The element and its ID.
  */
-export const createServerCards = () => {
-  if (!server_select()) return null;
+export const createServerCards = async () => {
+  const s1 = await server_select();
+  if (!s1) return null;
 
   const id = "server-cards-container";
   const wrap = createElement("div", { className: "serverCards", id });
 
-  [...server_select().options].forEach(opt => {
+  [...s1.options].forEach(opt => {
     const raw = opt.text.replace(/^\d+\s-\s/, "");
     const [name, players, ping] = raw.split(" - ");
     const [cur, max] = players.split(" / ").map(Number);
@@ -37,8 +39,8 @@ export const createServerCards = () => {
     const card = createElement("div", { className: "serverCard", dataset: { value: opt.value } });
     if (opt.selected) card.classList.add("active");
     card.onclick = () => {
-      server_select().value = opt.value;
-      server_select().dispatchEvent(new Event("change", { bubbles: true }));
+      s1.value = opt.value;
+      s1.dispatchEvent(new Event("change", { bubbles: true }));
     };
 
     card.appendChild(fill);

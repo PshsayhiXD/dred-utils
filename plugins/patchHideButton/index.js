@@ -1,6 +1,7 @@
 import { window_dark_container } from "../../utils/constants.js";
+import { addListener } from "../../bridge/pageBridge.js";
 
-setTimeout(() => {
+addListener("domMutated", () => {
   window_dark_container().addEventListener("click", (e) => {
     const btn = e.target.closest("button");
     if (!btn) return;
@@ -9,4 +10,4 @@ setTimeout(() => {
       e.stopImmediatePropagation();
     }
   }, true);
-}, 1000);
+}, "windowDark");

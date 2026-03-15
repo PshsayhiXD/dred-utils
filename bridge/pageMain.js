@@ -17,7 +17,7 @@ export const startMutationObserver = async (targets = document.body, cfg = {}) =
   if (!Array.isArray(targets)) targets = [targets];
   targets = targets
     .flatMap(t => typeof t === "string" ? [...document.querySelectorAll(t)] : [t])
-    .filter(Boolean);
+    .filter(t => t instanceof Node);
   if (!targets.length) return { stop: () => {} };
 
   let queued = false;

@@ -21,12 +21,16 @@ export const setting_btn = () =>
     "button.btn-yellow.btn-small.last-left"
   ) || null;
 
+export const shipyard = () => document.getElementById("shipyard") || null;
+export const shipyard_ships = () => shipyard().querySelector("#shipyard-ships") || null;
+export const shipyard_loading = () => shipyard_ships().firstElementChild || null;
+
 // =======================
 //          CHAT
 // =======================
 export const chat_container = async () =>
   document.getElementById("chat") ||
-  (await waitForElement(window_ui_left_container, "#chat"));
+  (await waitForElement(window_ui_left_container, "#chat")) || null;
 
 export const chat_close = async () =>
   (await chat_container())?.querySelector("#chat-close") || null;
@@ -108,11 +112,12 @@ export const team_players_inner_tbody = async () =>
 // =======================
 //      SERVER
 // =======================
-export const server_section = () =>
-  window_dark_container()?.querySelector("section") || null;
-
-export const server_select = () =>
-  server_section()?.querySelector("select") || null;
+export const server_section = async () =>
+  big_ui_container.querySelector(".window.dark section") ||
+  (await waitForElement(big_ui_container, ".window.dark section"))
+  
+export const server_select = async () =>
+  (await server_section())?.querySelector("select") || null;
 
 // =======================
 //        ALIASES
