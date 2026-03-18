@@ -8,16 +8,19 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://drednot.io/*"],
+      "matches": ["https://drednot.io/", "https://test.drednot.io/"],
       "js": ["dist/content.js", "dist/plugins.js"],
       "css": ["dist/content.css"],
       "run_at": "document_idle"
     }
   ],
-  "permissions": ["storage", "declarativeNetRequest"],
-  "host_permissions": ["https://*.drednot.io", "https://drednot.io"],
+  "permissions": ["storage", "declarativeNetRequest", "cookies", "tabs"],
+  "host_permissions": ["https://*.drednot.io/*", "https://drednot.io/*"],
   "action": {
     "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
   },
   "web_accessible_resources": [
     {

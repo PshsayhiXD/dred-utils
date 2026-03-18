@@ -31,6 +31,18 @@ export const postMessageToPageBridge = (message, from = null) => {
   window.postMessage({ ...message, from }, "*");
 };
 
+export const sendToBackground = (type, data = {}) => new Promise(res => {
+  const id = Math.random().toString(36);
+  const handler = e => {
+    if (e.data?.id !== id) return;
+    if (!("value" in e.data)) return;
+    window.removeEventListener("message", handler);
+    res(e.data.value);
+  };
+  window.addEventListener("message", handler);
+  window.postMessage({ type, ...data, id }, "*");
+});
+
 window.addEventListener("message", e => {
   if (e.source !== window) return;
   const { type, from: msgFrom, payload } = e.data || {};

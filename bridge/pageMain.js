@@ -14,10 +14,35 @@ import { getPath, getParentPath } from "../utils/elements/dom.js";
 export const startMutationObserver = async (targets = document.body, cfg = {}) => {
   const { type = "domMutated", from = null } = cfg;
   if (!targets) return { stop: () => {} };
+
   if (!Array.isArray(targets)) targets = [targets];
-  targets = targets
-    .flatMap(t => typeof t === "string" ? [...document.querySelectorAll(t)] : [t])
-    .filter(t => t instanceof Node);
+
+  const resolveTargets = () =>
+    targets
+      .flatMap(t => typeof t === "string"
+        ? [...document.querySelectorAll(t)]
+        : [t])
+      .filter(t => t instanceof Node);
+
+  let resolved = resolveTargets();
+
+  if (!resolved.length) {
+    await new Promise(resolve => {
+      const waitObserver = new MutationObserver(() => {
+        resolved = resolveTargets();
+        if (!resolved.length) return;
+        waitObserver.disconnect();
+        resolve();
+      });
+
+      waitObserver.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+      });
+    });
+  }
+
+  targets = resolveTargets();
   if (!targets.length) return { stop: () => {} };
 
   let queued = false;
@@ -28,15 +53,19 @@ export const startMutationObserver = async (targets = document.body, cfg = {}) =
     if (suppress) return;
     queue.push(...mutations);
     if (queued) return;
+
     queued = true;
+
     requestAnimationFrame(() => {
       queued = false;
       suppress = true;
       observer.disconnect();
+
       try {
         flush();
       } finally {
         suppress = false;
+
         if (!cfg.once) {
           targets.forEach(t =>
             observer.observe(t, {
@@ -60,7 +89,9 @@ export const startMutationObserver = async (targets = document.body, cfg = {}) =
       added: [...m.addedNodes].filter(n => n.nodeType === 1).map(getPath),
       removed: [...m.removedNodes].filter(n => n.nodeType === 1).map(getPath)
     }));
+
     queue = [];
+
     window.postMessage({
       source: chrome.runtime.getManifest().name,
       type,
