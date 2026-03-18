@@ -1,0 +1,41 @@
+const getGameTab = () =>
+chrome.tabs.query({ url: "*://*.drednot.io/*" }).then(tabs => tabs[0] ?? null);
+
+chrome.runtime.onMessage.addListener((msg, sender, res) => {
+  if (msg.type === "getSession") {
+    console.log("ok")
+    getGameTab().then(tab => {
+      if (!tab) return res(null);
+      chrome.cookies.get({ url: tab.url, name: "game_session" })
+      .then(c => res(c?.value || null));
+    });
+    return true;
+  }
+
+  if (msg.type === "setSession") {
+    chrome.cookies.getAll({ name: "game_session" }).then(cookies => {
+      const existing = cookies[0];
+      const domain = existing?.domain ?? ".drednot.io";
+      const url = `https://${domain.replace(/^\./, "")}/`;
+      chrome.cookies.set({
+        url,
+        domain,
+        name: "game_session",
+        value: msg.token,
+        secure: true,
+        httpOnly: true,
+        path: "/",
+        expirationDate: Math.floor(Date.now() / 1000) + (2 * 24 * 60 * 60)
+      }).then(() => res(true));
+    });
+    return true;
+  }
+
+  if (msg.type === "reloadGameTabs") {
+    chrome.tabs.query({ url: "*://*.drednot.io/*" }).then(tabs => {
+      tabs.forEach(t => chrome.tabs.reload(t.id));
+      res(true);
+    });
+    return true;
+  }
+});
