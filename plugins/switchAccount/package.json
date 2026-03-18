@@ -1,0 +1,10 @@
+{
+  "displayName": "Switch account",
+  "id": "switchaccount",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Switch between your accounts!",
+  "main": "index.js",
+  "css": "switchAccount.css",
+  "configPath": "PLUGIN.switchaccount"
+}
