@@ -13,20 +13,38 @@ chrome.runtime.onMessage.addListener((msg, sender, res) => {
   }
 
   if (msg.type === "setSession") {
-    chrome.cookies.getAll({ name: "game_session" }).then(cookies => {
-      const existing = cookies[0];
+    chrome.cookies.getAll({ name: "game_session", domain: "drednot.io" }).then(cookies => {
+      const dredCookies = cookies.filter(c => c.domain.includes("drednot.io"));
+      const existing = dredCookies[0];
       const domain = existing?.domain ?? ".drednot.io";
       const url = `https://${domain.replace(/^\./, "")}/`;
-      chrome.cookies.set({
-        url,
-        domain,
-        name: "game_session",
-        value: msg.token,
-        secure: true,
-        httpOnly: true,
-        path: "/",
-        expirationDate: Math.floor(Date.now() / 1000) + (2 * 24 * 60 * 60)
-      }).then(() => res(true));
+      
+      const removePromises = dredCookies.map(c => 
+        chrome.cookies.remove({
+          url: `https://${c.domain.replace(/^\./, "")}${c.path}`,
+          name: c.name
+        })
+      );
+
+      Promise.all(removePromises).then(() => {
+        if (!msg.token) return res(true);
+
+        const details = {
+          url,
+          name: "game_session",
+          value: msg.token,
+          secure: existing?.secure ?? true,
+          httpOnly: existing?.httpOnly ?? true,
+          path: existing?.path ?? "/",
+          expirationDate: Math.floor(Date.now() / 1000) + (2 * 24 * 60 * 60)
+        };
+        
+        if (!existing || !existing.hostOnly) {
+          details.domain = domain;
+        }
+
+        chrome.cookies.set(details).then(() => res(true));
+      });
     });
     return true;
   }

@@ -33,6 +33,6 @@ export const switchAccount=async name=>{
   const token=await getAccount(name);
   if(!token)return false;
   await setSession(token);
-  //await reloadGameTabs();
+  await reloadGameTabs();
   return true;
 };

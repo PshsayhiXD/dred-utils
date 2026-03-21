@@ -1,5 +1,5 @@
 import { listAccounts, deleteAccount, saveAccount } from "../switchAccountDB.js";
-import { switchAccount, getCurrentSession } from "../accountLoader.js";
+import { switchAccount, getCurrentSession, setSession, reloadGameTabs } from "../accountLoader.js";
 import { createElement } from "../../../utils/elements/dom.js";
 
 export const createSwitchAccountBtn = async () => {
@@ -35,6 +35,16 @@ export const createSwitchAccountBtn = async () => {
       createElement("div", { className: "sa-input-row", append: [input, saveBtn] }),
     ],
   });
+  
+  const localLogoutBtn = createElement("a", { 
+    className: "btn btn-small btn-red", 
+    textContent: "Log Out", 
+    style: "cursor: pointer; margin-left: 5px;"
+  });
+  localLogoutBtn.onclick = async () => {
+    await setSession("");
+    await reloadGameTabs();
+  };
 
   const body = createElement("div", {
     className: "sa-body",
@@ -125,5 +135,5 @@ export const createSwitchAccountBtn = async () => {
 
   document.body.appendChild(menu);
   root.appendChild(btn);
-  return { container: root, id };
+  return { container: root, id, localLogoutBtn };
 };

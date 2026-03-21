@@ -5,11 +5,17 @@ import { account_section } from "../../utils/elements/constants.js";
 (async () => {
   const as = await account_section();
   if (!as) return;
-  const { container, id } = await createSwitchAccountBtn();
+  const { container, id, localLogoutBtn } = await createSwitchAccountBtn();
   if (as.querySelector(`#${id}`)) return;
   const p = as.querySelectorAll("p")[2];
   if (!p) return;
   const form = p.querySelector("form");
-  if (!form) return;
-  p.insertBefore(container, form);
+  if (form) {
+    p.insertBefore(container, form);
+    p.insertBefore(localLogoutBtn, form);
+    form.style.display = "none";
+  } else {
+    p.appendChild(container);
+    p.appendChild(localLogoutBtn);
+  }
 })();
