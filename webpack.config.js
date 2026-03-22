@@ -5,7 +5,7 @@ export default {
   mode: "production",
   entry: {
     content: "./content.js",
-    plugins: "./utils/plugins.js",
+    plugins: "./utils/pluginLoader.js",
   },
   output: {
     filename: "[name].js",

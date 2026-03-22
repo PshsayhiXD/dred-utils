@@ -6,16 +6,9 @@ import { getByPath } from "./helper.js";
 
 const metaContext = require.context("../plugins", true, /package\.json$/);
 
-/**
- * Returns list of plugin directory names.
- * @returns {string[]}
- */
 export const PLUGIN_LIST = () =>
   metaContext.keys().map(k => k.replace(/^\.\//, "").replace(/\/package\.json$/, ""));
 
-/**
- * Resolve plugin enabled states from config.
- */
 export const getPluginStates = async () => {
   const config = await getConfig();
   const plugins = PLUGIN_LIST();
@@ -35,9 +28,6 @@ export const getPluginStates = async () => {
   return result;
 };
 
-/**
- * Toggle plugin enabled state via config.
- */
 export const togglePluginState = async (pluginDir) => {
   const config = await getConfig();
   const current = getByPath(config, `PLUGIN.${pluginDir}.enabled`) !== false;
@@ -48,20 +38,22 @@ export const togglePluginState = async (pluginDir) => {
   });
 };
 
-/**
- * Loads and injects enabled plugins based on their metadata.
- */
 export const loadPlugins = async (plugins) => {
   if (!Array.isArray(plugins)) throw new TypeError("[LOADPLUGINS] plugins must be an array.");
   const states = await getPluginStates();
-  for (const dir of plugins) {
-    if (!states[dir]) continue;
+  const enabledPlugins = plugins.filter(dir => states[dir]);
+  for (const dir of enabledPlugins) {
     try {
       const meta = metaContext(`./${dir}/package.json`);
-      const mains = [].concat(meta.main || meta.index || []);
       const styles = [].concat(meta.css || []);
-      for (const m of mains) injectPageScript(`plugins/${dir}/${m}`);
       for (const c of styles) injectPageCSS(`plugins/${dir}/${c}`);
     } catch {}
   }
+
+  const signalMainWorld = () => {
+    window.dispatchEvent(new CustomEvent("dred:initPlugins", { detail: enabledPlugins }));
+  };
+
+  signalMainWorld();
+  window.addEventListener("dred:pluginsReady", signalMainWorld);
 };
