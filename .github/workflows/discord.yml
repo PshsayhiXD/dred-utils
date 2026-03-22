@@ -1,0 +1,19 @@
+name: Discord Notify
+on:
+  push:
+  pull_request:
+  release:
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send to Discord
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.WEBHOOK }}
+          DISCORD_USERNAME: "GitHub Bot"
+          DISCORD_AVATAR: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+          DISCORD_CONTENT: |
+            **${{ github.event_name }}** on `${{ github.repository }}`
+            by **${{ github.actor }}**
+            [View Commit](${{ github.event.head_commit.url }})
