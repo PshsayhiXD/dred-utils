@@ -8,13 +8,19 @@ export const window_ui_left_container = window_container.querySelector("#ui-cont
 
 export const big_ui_container = document.getElementById("big-ui-container");
 export const window_dark_container = () => big_ui_container.querySelector(".window.dark");
-export const button_container = document.querySelector(".button-container");
 export const content_bottom_container = document.getElementById("content-bottom");
 export const game_container = document.getElementById("game-container");
 export const canvas = document.getElementById("canvas-game");
 export const station_ui_container = window_container.querySelector("#station-ui");
 export const pui_container = window_container.querySelector("#pui");
 export const item_ui_container = document.getElementById("item-ui-container");
+
+export const content_bottom = document.getElementById("content-bottom");
+export const button_container = content_bottom.querySelector(".button-container");
+export const container_right = content_bottom.querySelector(".container-right");
+export const bottom_bar = container_right.querySelector("#bottom-bar");
+
+export const top_bar = document.getElementById("top-bar");
 
 export const setting_btn = () =>
   content_bottom_container?.querySelector(
@@ -125,8 +131,7 @@ export const server_section = async () => {
     (await waitForElement(big_ui_container, ".window.dark"));
   return win?.querySelectorAll("section")[0] || null;
 };
-export const server_select = async () =>
-  (await server_section())?.querySelector("select") || null;
+export const server_select = async () => (await server_section())?.querySelector("select") || null;
 
 export const account_section = async () => {
   const win =
@@ -134,22 +139,10 @@ export const account_section = async () => {
     (await waitForElement(big_ui_container, ".window.dark"));
   return win?.querySelectorAll("section")[1] || null;
 };
-export const account_username = async () => {
-  const el = (await account_section()).querySelector("code.user");
-  return el || null;
-};
-export const account_badge = async () => {
-  const el = (await account_section()).querySelector(".user-badge");
-  return el || null;
-};
-export const account_manage_btn = async () => {
-  const el = (await account_section()).querySelector("a.btn.btn-small");
-  return el || null;
-};
-export const account_logout_btn = async () => {
-  const el = (await account_section()).querySelector("button.btn-small.button-orange");
-  return el || null;
-};
+export const account_username = async () => (await account_section()).querySelector("code.user") || null;
+export const account_badge = async () => (await account_section()).querySelector(".user-badge") || null;
+export const account_manage_btn = async () => (await account_section()).querySelector("a.btn.btn-small") || null;
+export const account_logout_btn = async () => (await account_section()).querySelector("button.btn-small.button-orange") || null;
 
 export const ship_list_section = async () => {
   const win =
@@ -157,6 +150,17 @@ export const ship_list_section = async () => {
     (await waitForElement(big_ui_container, ".window.dark"));
   return win?.querySelectorAll("section")[2] || null;
 };
+export const ship_list_refresh_btn = async () => (await ship_list_section()).querySelector("button.btn-small") || null;
+export const ship_list_section_title = async () => (await ship_list_section()).querySelector("h3") || null;
+export const ship_list_p = async () => (await ship_list_section()).querySelectorAll("p") || [];
+export const ship_list_p1 = async () => (await ship_list_p())[0];
+export const ship_list_p2 = async () => (await ship_list_p())[1];
+export const ship_list_p3 = async () => (await ship_list_p())[2];
+export const ship_list_p4 = async () => (await ship_list_p())[3];
+
+export const ship_list_ship_input = async () => (await ship_list_p1()).querySelector("input") || null;
+
+
 // =======================
 //        ALIASES
 // =======================
