@@ -1,0 +1,10 @@
+{
+  "displayName": "Better Joining Ship",
+  "id": "betterjoiningship",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Shows a loading screen while joining a ship, dismisses on completion.",
+  "main": "index.js",
+  "configPath": "PLUGIN.betterjoiningship",
+  "css": "joining.css"
+}
