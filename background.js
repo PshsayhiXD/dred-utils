@@ -1,7 +1,10 @@
 const getGameTab = (currentTab) => {
   if (currentTab) return Promise.resolve(currentTab);
-  return chrome.tabs.query({ active: true, currentWindow: true, url: "*://*.drednot.io/*" })
-    .then(tabs => tabs[0] || chrome.tabs.query({ url: "*://*.drednot.io/*" }).then(all => all[0] || null));
+  const patterns = ["*://drednot.io/*", "*://*.drednot.io/*"];
+  return chrome.tabs.query({ active: true, currentWindow: true, url: patterns })
+    .then(tabs => tabs[0] || chrome.tabs.query({ active: true, url: patterns })
+    .then(activeAny => activeAny[0] || chrome.tabs.query({ url: patterns })
+    .then(all => all[0] || null)));
 };
 
 chrome.runtime.onMessage.addListener((msg, sender, res) => {
