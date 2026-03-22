@@ -1,0 +1,11 @@
+{
+  "displayName": "Auto Refresh Ship List",
+  "id": "autorefreshshiplist",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Clicks the ship list refresh button.",
+  "main": "index.js",
+  "css": "autoRefresh.css",
+  "configPath": "PLUGIN.autorefreshshiplist",
+  "defaultEnabled": true
+}
