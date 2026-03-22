@@ -1,7 +1,7 @@
 import { createButton } from "../../../utils/elements/dom.js";
 import { createAddBadgeSelect } from "./addUserBadgeSelect.js";
 import { getUserBadges, saveUserBadges } from "../badgeDB.js";
-import { createNotification } from "../../../utils/elements/notifications.js";
+import { showToast } from "../../../utils/elements/toast.js";
 /**
  * Creates a button to add a badge to a user selected from chat.
  * When clicked, it shows a UI to select user and badge, then adds the badge to the user.
@@ -37,20 +37,17 @@ export const createAddUserBadgeBtn = () => {
       const selectedUser = userSelect.value;
       const selectedBadgeIndex = badgeSelect.value;
       if (!selectedUser || selectedBadgeIndex === "")
-        return await createNotification(
-          "Please select both a user and a badge.",
-          { type: "error" }
-        );
+        return showToast("Please select both a user and a badge.", {
+          type: "error",
+        });
       const badges = await getUserBadges(selectedUser);
       const selectedBadge = badges[parseInt(selectedBadgeIndex)];
       if (!selectedBadge)
-        return await createNotification("Selected badge not found.", {
-          type: "error",
-        });
+        return showToast("Selected badge not found.");
       const userBadges = await getUserBadges(selectedUser);
       userBadges.push(selectedBadge);
       await saveUserBadges(selectedUser, userBadges);
-      alert(`Badge added to ${selectedUser}!`);
+      showToast(`Badge added to ${selectedUser}!`);
       selectContainer.remove();
       selectContainer = null;
     });
