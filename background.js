@@ -1,13 +1,21 @@
-const getGameTab = () =>
-chrome.tabs.query({ url: "*://*.drednot.io/*" }).then(tabs => tabs[0] ?? null);
+const getGameTab = (currentTab) => {
+  if (currentTab) return Promise.resolve(currentTab);
+  return chrome.tabs.query({ active: true, currentWindow: true, url: "*://*.drednot.io/*" })
+    .then(tabs => tabs[0] || chrome.tabs.query({ url: "*://*.drednot.io/*" }).then(all => all[0] || null));
+};
 
 chrome.runtime.onMessage.addListener((msg, sender, res) => {
+  const targetTab = sender.tab;
+
   if (msg.type === "getSession") {
-    console.log("ok")
-    getGameTab().then(tab => {
+    getGameTab(targetTab).then(tab => {
       if (!tab) return res(null);
       chrome.cookies.get({ url: tab.url, name: "game_session" })
-      .then(c => res(c?.value || null));
+      .then(c => {
+        if (c?.value) return res(c.value);
+        chrome.cookies.get({ url: tab.url, name: "anon_key" })
+        .then(c2 => res(c2?.value || null));
+      });
     });
     return true;
   }
@@ -50,8 +58,8 @@ chrome.runtime.onMessage.addListener((msg, sender, res) => {
   }
 
   if (msg.type === "reloadGameTabs") {
-    chrome.tabs.query({ url: "*://*.drednot.io/*" }).then(tabs => {
-      tabs.forEach(t => chrome.tabs.reload(t.id));
+    getGameTab(targetTab).then(tab => {
+      if (tab) chrome.tabs.reload(tab.id);
       res(true);
     });
     return true;
