@@ -1,4 +1,4 @@
-import { motd_discard_btn } from "../../../utils/constants.js";
+import { motd_discard_btn } from "../../utils/constants.js";
 import { createMotdCounter } from "./elements/textIndicator.js";
 
 (async () => {

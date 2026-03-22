@@ -5,11 +5,11 @@ import { saveFile, getFile, deleteFile } from "../../storage/OPFS.js";
 const dbFile="accounts.db";
 
 /**
- * Reads the account database.
+ * Reads the account database. (Exported for efficiency)
  * @async
  * @returns {Promise<Object<string,string>>} Account-token map.
  */
-const readDB=async()=>{
+export const getAccounts=async()=>{
   const raw=await getFile(dbFile);
   if(!raw)return {};
   try{return JSON.parse(raw);}catch{return {};}
@@ -33,7 +33,7 @@ const writeDB=async data=>{
  * @returns {Promise<boolean>} True if saved.
  */
 export const saveAccount=async(name,token)=>{
-  const db=await readDB();
+  const db=await getAccounts();
   db[name]=token;
   return await writeDB(db);
 };
@@ -45,7 +45,7 @@ export const saveAccount=async(name,token)=>{
  * @returns {Promise<string|null>} The stored token.
  */
 export const getAccount=async name=>{
-  const db=await readDB();
+  const db=await getAccounts();
   return db[name]||null;
 };
 
@@ -56,7 +56,7 @@ export const getAccount=async name=>{
  * @returns {Promise<boolean>} True if removed.
  */
 export const deleteAccount=async name=>{
-  const db=await readDB();
+  const db=await getAccounts();
   if(!db[name])return false;
   delete db[name];
   return await writeDB(db);
@@ -68,7 +68,7 @@ export const deleteAccount=async name=>{
  * @returns {Promise<string[]>} Array of account names.
  */
 export const listAccounts=async()=>{
-  const db=await readDB();
+  const db=await getAccounts();
   return Object.keys(db);
 };
 

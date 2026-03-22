@@ -1,4 +1,3 @@
-import { addListener } from "../../bridge/pageBridge.js";
 import { createSwitchAccountBtn } from "./elements/switchAccountBtn.js";
 import { account_section } from "../../utils/elements/constants.js";
 

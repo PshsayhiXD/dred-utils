@@ -133,3 +133,34 @@
   color: #90c890;
 }
 .sa-btn-switch:hover { background: #344d34; color: #b0e8b0; }
+ 
+.sa-notification {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px;
+  background: #333;
+  color: #fff;
+  font-size: 11px;
+  text-align: center;
+  border-top: 1px solid #444;
+  transform: translateY(100%);
+  transition: transform .2s ease-out;
+  pointer-events: none;
+  z-index: 10;
+}
+.sa-notification.show { transform: translateY(0); }
+.sa-notification-error { background: #5a2a2a; color: #ffaaaa; }
+.sa-notification-success { background: #2a4a2a; color: #aaffaa; }
+ 
+.sa-dot.current {
+  background: #4a704a;
+  box-shadow: 0 0 4px #4a704a;
+}
+.sa-current-tag {
+  color: #666;
+  font-size: 9px;
+  margin-left: auto;
+  font-style: italic;
+}
