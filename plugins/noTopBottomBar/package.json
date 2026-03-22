@@ -1,0 +1,9 @@
+{
+  "displayName": "No Top Bottom Bar",
+  "id": "notopbottombar",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Removes the Top and Bottom bar.",
+  "main": "index.js",
+  "configPath": "PLUGIN.notopbottombar"
+}
