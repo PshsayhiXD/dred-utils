@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drednot Utils</title>
+  <link rel="stylesheet" href="../fontawesome.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div id="wrong-page" class="container"
+    style="display:none; justify-content: center; align-items: center; text-align: center; padding: 40px;">
+    <i class="fas fa-exclamation-circle" style="font-size: 48px; color: #ff4d4d; margin-bottom: 20px;"></i>
+    <h2 style="margin-bottom: 10px;">Wrong Page</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 20px;">Please open drednot.io to use this extension.</p>
+    <button id="open-drednot-btn" class="btn btn-discord">Open drednot.io</button>
+  </div>
+
+  <div id="main-ui" class="container">
+    <header>
+      <img src="../asset/logo.png" alt="DREDUTILS Logo" class="brand-logo">
+      <h1>DREDUTILS</h1>
+    </header>
+
+    <nav>
+      <div class="nav-item active" data-tab="social">
+        <i class="fas fa-users"></i>Social
+      </div>
+      <div class="nav-item" data-tab="settings">
+        <i class="fas fa-cog"></i>Settings
+      </div>
+    </nav>
+
+    <main>
+      <div id="social" class="tab-content active">
+        <section id="login-section" style="display: none;">
+          <h3>Sign In</h3>
+          <div id="login-options">
+            <button id="discord-login-btn" class="btn btn-discord">
+              <i class="fab fa-discord"></i>
+              <span>Login with Discord</span>
+              <i id="login-spinner" class="fas fa-spinner fa-spin" style="display: none;"></i>
+            </button>
+          </div>
+        </section>
+      </div>
+      <div id="settings" class="tab-content">
+        <div id="plugin-list-view">
+          <section id="account-section" style="display:none;">
+          <h3>Account & Privacy</h3>
+          <div id="user-info" class="card">
+            <div id="user-email-container" class="email-container">
+              <i class="fas fa-user-shield"></i>
+              <span id="user-email-text" class="email-text">Click to reveal email</span>
+            </div>
+            <button id="logout-btn" class="btn btn-danger btn-sm" style="margin-top: 10px;">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+          </div>
+        </section>
+
+        <section>
+          <h3>Plugins</h3>
+          <div id="plugin-list" class="card">
+            <p>Loading plugins...</p>
+          </div>
+        </section>
+
+        <section>
+          <h3>Security & Backup</h3>
+          <div class="card">
+            <button id="backup-btn" class="btn btn-outline">
+              <i class="fas fa-download"></i> Backup Private Key
+            </button>
+            <button id="restore-btn" class="btn btn-outline">
+              <i class="fas fa-upload"></i> Restore Private Key
+            </button>
+          </div>
+        </section>
+        </div>
+
+        <div id="plugin-settings-view" style="display: none;">
+          <header class="settings-header">
+            <button id="settings-back-btn" class="icon-btn">
+              <i class="fas fa-arrow-left"></i>
+            </button>
+            <h3 id="settings-plugin-name" style="margin-bottom: 0;">Plugin Settings</h3>
+          </header>
+          <div id="settings-content" class="card"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="../dist/popup.js"></script>
+</body>
+
+</html>
