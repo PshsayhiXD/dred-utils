@@ -1,10 +1,8 @@
 {
   "displayName": "Track Joined Ship",
   "id": "trackjoinedship",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Tracks ship joining and emits events for other plugins.",
-  "main": "index.js",
   "configPath": "PLUGIN.trackjoinedship",
-  "author": "Pshsayhi",
-  "license": "MIT"
+  "author": "Pshsayhi"
 }
