@@ -8,3 +8,18 @@
 @import "teamMenu.css";
 @import "toast.css";
 @import "window.css";
+@import "chat.css";
+
+.hide {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.transparent {
+  background: none !important;
+  background-color: none !important;
+  border-color: none !important;
+  box-shadow: none !important;
+}
