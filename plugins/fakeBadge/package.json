@@ -1,9 +1,21 @@
 {
   "displayName": "Fake Badge",
   "id": "fakebadge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Pshsayhi",
   "description": "Adds fake badges to users",
+  "databaseNamespace": "badges",
   "main": "index.js",
-  "configPath": "PLUGIN.fakebadge"
+  "settings": [
+    {
+      "key": "registeredBadges",
+      "label": "Register Badge",
+      "type": "register",
+      "fields": [
+        { "key": "badge", "label": "Badge ID", "placeholder": "e.g. dev, mod, vip", "required": true },
+        { "key": "image", "label": "Badge Image", "placeholder": "Enter badge image URL", "required": true },
+        { "key": "description", "label": "Badge Description", "placeholder": "Enter badge description", "required": false }
+      ]
+    }
+  ]
 }

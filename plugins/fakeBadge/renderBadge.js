@@ -1,18 +1,14 @@
-import { getBadges } from "../../utils/badgesDb.js";
+import { getUserBadges } from "./badgeDB.js";
 import { chat_content, big_ui_container } from "../../utils/constants.js";
 import { getClientUsername } from "../../utils/drednot.js";
-/**
- * Renders badges in the chat interface.
- * @async
- * @returns {Promise<void>}
- */
+
 export const renderChatBadges = async () => {
-  const chatContent = await chat_content();
+  const chatContent = chat_content();
   const paragraphs = chatContent?.querySelectorAll("p") || [];
   for (const p of paragraphs) {
     const username = p.querySelector("bdi")?.innerText ?? "none";
     if (!username) continue;
-    const badges = await getBadges(username);
+    const badges = await getUserBadges(username);
     badges.forEach((b) =>
       p.insertAdjacentHTML(
         "beforeend",
@@ -22,14 +18,9 @@ export const renderChatBadges = async () => {
   }
 };
 
-/**
- * Renders badges in the client UI.
- * @async
- * @returns {Promise<void>}
- */
 export const renderClientBadges = async () => {
   const client = await getClientUsername();
-  const badges = await getBadges(client);
+  const badges = await getUserBadges(client);
   const target = big_ui_container?.querySelectorAll("section")[1]?.querySelectorAll("p")[1];
   if (!target) return;
   badges.forEach(b =>
