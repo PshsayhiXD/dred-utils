@@ -1,16 +1,12 @@
 import { motd_edit } from "../../../utils/constants.js";
-import { createElement } from "../../../utils/elements/dom.js";
+import { createElement, qs, are } from "../../../utils/elements/dom.js";
 
-/**
- * Creates and wires the MOTD counter.
- * @returns {Promise<{counter: HTMLElement, textarea: HTMLTextAreaElement, id: string, className: string}|null>}
- */
-export const createMotdCounter = async () => {
-  const textarea = await motd_edit();
-  if (!textarea) return null;
+export const createMotdCounter = () => {
+  const textarea = motd_edit();
+  if (!are(textarea, HTMLTextAreaElement)) return null;
   const id = "motd-counter";
   const className = "motdCounter";
-  let counter = document.getElementById(id);
+  let counter = qs(`#${id}`);
   if (!counter) counter = createElement("span", { id, className });
   else counter.className = className;
   const lerp = (a, b, v) => Math.round(a + (b - a) * v);
