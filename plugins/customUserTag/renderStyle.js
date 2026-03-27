@@ -1,13 +1,10 @@
 import { team_players_inner_codes } from "../../utils/constants.js";
 import { getLatestChat, isDuplicatedText } from "../../utils/drednot.js";
 import { getUserTagStyles } from "./styleDB.js";
-/**
- * Styles the username in the latest chat message only.
- * @param {{name:string,perChar?:boolean}[]} styles The styles to apply.
- * @returns {Promise<void>}
- */
-export const renderLatestChatUserStyle = async styles => {
-  const latest = await getLatestChat();
+import { createElement, qs, qsa } from "../../utils/elements/dom.js";
+
+export const renderLatestChatUserStyle = styles => {
+  const latest = getLatestChat();
   if (!latest?.element || !latest?.username) return;
   if (latest.element.dataset.styleApplied === "1") return;
   const usernameEl = latest.element.querySelector("bdi");
@@ -27,14 +24,9 @@ export const renderLatestChatUserStyle = async styles => {
   ).join("");
   latest.element.dataset.styleApplied = "1";
 };
-/**
- * Draws styled username overlays without duplication.
- *
- * @async
- * @returns {Promise<void>}
- */
+
 export const renderTeamMenuTagStyle = async () => {
-  const nodes = Array.from(await team_players_inner_codes());
+  const nodes = Array.from(team_players_inner_codes());
   for (const codeEl of nodes) {
     const text = codeEl.textContent?.trim();
     if (!text) continue;
@@ -43,15 +35,10 @@ export const renderTeamMenuTagStyle = async () => {
     if (getComputedStyle(parent).position === "static") {
       parent.style.position = "relative";
     }
-    parent.querySelectorAll("code[data-username-overlay]").forEach(n => n.remove());
-    let overlay = parent.querySelector("code[data-username-overlay]");
+    qsa(parent, "code[data-username-overlay]").forEach(n => n.remove());
+    let overlay = qs(parent, "code[data-username-overlay]");
     if (!overlay) {
-      overlay = document.createElement("code");
-      overlay.dataset.usernameOverlay = "1";
-      overlay.style.position = "absolute";
-      overlay.style.pointerEvents = "none";
-      overlay.style.whiteSpace = "pre";
-      overlay.style.visibility = "visible";
+      overlay = createElement("code", { dataset: { usernameOverlay: "1" }, style: { position: "absolute", pointerEvents: "none", whiteSpace: "pre", visibility: "visible" } });
       parent.appendChild(overlay);
     }
     codeEl.style.visibility = "hidden";

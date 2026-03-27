@@ -1,10 +1,11 @@
 {
   "displayName": "Custom User Tag",
   "id": "customusertag",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Pshsayhi",
   "description": "Add custom style to people tag.",
   "main": "index.js",
   "configPath": "PLUGIN.customusertag",
-  "css": ["styles/rgbtext.css", "styles/gradient.css"]
+  "css": ["styles/rgbtext.css", "styles/gradient.css"],
+  "databaseNamespace": "customUserTag"
 }

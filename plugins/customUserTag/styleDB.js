@@ -1,13 +1,6 @@
 import { getFile, saveFile } from "../../storage/OPFS.js";
 import { getClientUsername } from "../../utils/drednot.js";
 
-/**
- * Save user tag styles.
- * @async
- * @param {string} type The target type.
- * @param {string[]} styles The styles to persist.
- * @returns {Promise<string>} Resolved user key.
- */
 export const setUserTagStyles = async (type, styles) => {
   const raw = await getFile("customUserTag") || "[]";
   const list = JSON.parse(raw);
@@ -32,12 +25,6 @@ export const setUserTagStyles = async (type, styles) => {
   return resolved;
 };
 
-/**
- * Loads saved user tag styles.
- * @async
- * @param {string} type The target username.
- * @returns {Promise<string[]>} The saved style names.
- */
 export const getUserTagStyles = async (type) => {
   const raw = await getFile("customUserTag") || "[]";
   const list = JSON.parse(raw);
