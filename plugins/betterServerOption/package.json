@@ -1,7 +1,7 @@
 {
   "displayName": "Better Server Option",
   "id": "betterserveroption",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Pshsayhi",
   "description": "Restyle the server select option.",
   "main": "index.js",
