@@ -2,55 +2,42 @@
 
 const rootDir = async () => navigator.storage.getDirectory();
 
-/**
- * Saves a file with the given id and content to OPFS.
- * @async
- * @param {string} id
- * @param {string} content
- * @returns {Promise<boolean>}
- */
+const splitPath = id => String(id).split("/").filter(Boolean);
+
+const getDir = async (parts, create = false) => {
+  let dir = await rootDir();
+  for (const part of parts) dir = create ? await dir.getDirectoryHandle(part, { create: true }) : await dir.getDirectoryHandle(part);
+  return dir;
+};
+
+const getFileTarget = async (id, create = false) => {
+  if (typeof id !== "string" || !id.trim()) throw new TypeError("id must be a non-empty string.");
+  const parts = splitPath(id);
+  const name = parts.pop();
+  if (!name) throw new TypeError("id must contain a file name.");
+  const dir = parts.length ? await getDir(parts, create) : await rootDir();
+  return [dir, name];
+};
+
 export const saveFile = async (id, content) => {
-  const root = await rootDir();
-  const file = await root.getFileHandle(id, { create: true });
+  const [dir, name] = await getFileTarget(id, true);
+  const file = await dir.getFileHandle(name, { create: true });
   const writable = await file.createWritable();
   await writable.write(content);
   await writable.close();
   return true;
 };
 
-/**
- * Appends content to an existing file in OPFS.
- * Creates the file if it does not exist.
- * @async
- * @param {string} id
- * @param {string} contentToAppend
- * @returns {Promise<boolean>}
- */
 export const appendToFile = async (id, contentToAppend) => {
-  const root = await rootDir();
-  let existing = "";
-  try {
-    const file = await root.getFileHandle(id);
-    const f = await file.getFile();
-    existing = await f.text();
-  } catch {}
-  const file = await root.getFileHandle(id, { create: true });
-  const writable = await file.createWritable();
-  await writable.write(existing + contentToAppend);
-  await writable.close();
+  const existing = await getFile(id) || "";
+  await saveFile(id, existing + contentToAppend);
   return true;
 };
 
-/**
- * Retrieves the content of a file from OPFS.
- * @async
- * @param {string} id
- * @returns {Promise<string|null>}
- */
-export const getFile = async (id) => {
+export const getFile = async id => {
   try {
-    const root = await rootDir();
-    const file = await root.getFileHandle(id);
+    const [dir, name] = await getFileTarget(id, false);
+    const file = await dir.getFileHandle(name);
     const f = await file.getFile();
     return await f.text();
   } catch {
@@ -58,34 +45,47 @@ export const getFile = async (id) => {
   }
 };
 
-/**
- * Deletes a file from OPFS.
- * @async
- * @param {string} id
- * @returns {Promise<boolean>}
- */
-export const deleteFile = async (id) => {
-  const root = await rootDir();
+export const deleteFile = async id => {
   try {
-    await root.removeEntry(id);
+    const [dir, name] = await getFileTarget(id, false);
+    await dir.removeEntry(name);
     return true;
   } catch {
     return false;
   }
 };
 
-/**
- * Retrieves all files stored in OPFS.
- * @async
- * @returns {Promise<Array<{id: string, content: string}>>}
- */
 export const getAllFiles = async () => {
   const root = await rootDir();
   const result = [];
-  for await (const [name, handle] of root.entries()) {
-    if (handle.kind !== "file") continue;
-    const f = await handle.getFile();
-    result.push({ id: name, content: await f.text() });
-  }
+  const walk = async (dir, prefix) => {
+    for await (const handle of dir.values()) {
+      const id = prefix ? `${prefix}/${handle.name}` : handle.name;
+      if (handle.kind === "file") result.push({ id, content: await (await handle.getFile()).text() });
+      else if (handle.kind === "directory") await walk(handle, id);
+    }
+  };
+  await walk(root, "");
   return result;
+};
+
+export const saveNamespacedFile = async (namespace, fileName, content) => {
+  const path = `${namespace}/${fileName}`;
+  return saveFile(path, content);
+};
+
+export const appendNamespacedFile = async (namespace, fileName, content) => {
+  const path = `${namespace}/${fileName}`;
+  return appendToFile(path, content);
+};
+
+export const getNamespacedFiles = async namespace => {
+  const all = await getAllFiles();
+  const prefix = namespace + "/";
+  return all.filter(f => f.id === namespace || f.id.startsWith(prefix));
+};
+
+export const deleteNamespacedFile = async (namespace, fileName) => {
+  const path = `${namespace}/${fileName}`;
+  return deleteFile(path);
 };
