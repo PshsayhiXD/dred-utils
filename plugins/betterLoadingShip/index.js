@@ -1,14 +1,14 @@
-import { addListener } from "../../bridge/pageBridge.js";
+import { onDispatch } from "../../bridge/pageBridge.js";
 import { attachLoader, detachLoader } from "./elements/loading.js";
 import { shipyard_loading } from "../../utils/elements/constants.js";
 import { showToast } from "../../utils/elements/toast.js";
+import { are } from "../../utils/elements/dom.js";
 
 let wasLoading = false;
 
-addListener("domMutated", async () => {
-  const div = await shipyard_loading();
-  if (!div) return;
-  
+onDispatch("dredutils:shipyardShips", () => {
+  const div = shipyard_loading();
+  if (!are(div, HTMLElement)) return;
   if (div.style.display === "none") {
     if (wasLoading) {
       showToast("Ship loaded", { type: "success" });
@@ -19,12 +19,10 @@ addListener("domMutated", async () => {
     wasLoading = true;
     attachLoader(div);
   }
-}, "shipyardShips");
+});
 
-const initialDiv = await shipyard_loading();
-if (initialDiv) {
+const initialDiv = shipyard_loading();
+if (are(initialDiv, HTMLElement)) {
   attachLoader(initialDiv);
-  if (initialDiv.style.display !== "none") {
-    wasLoading = true;
-  }
+  if (initialDiv.style.display !== "none") wasLoading = true;
 }

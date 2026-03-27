@@ -1,3 +1,6 @@
+import { createElement } from "../../../utils/elements/dom.js";
+import { formatTime } from "../../../utils/helper.js";
+
 const TIPS = [
   "Tip: Use arrow keys to navigate",
   "Tip: Press Enter for chat",
@@ -5,24 +8,12 @@ const TIPS = [
   "Tip: Get respect by supporting though patreons",
   "Tip: Check MOTD for ship rules",
 ];
-
 const randomTip = () => TIPS[Math.floor(Math.random() * TIPS.length)];
-
-const formatTime = (seconds) => {
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return m > 0 ? `${m}m ${s}s` : `${s}s`;
-};
-
 let timerInterval = null;
-
 export const attachLoader = (div) => {
   if (!div || div.querySelector(".loading-content")) return;
   div.classList.add("loading-overlay");
-
-  const content = document.createElement("div");
-  content.className = "loading-content";
-
+  const content = createElement("div", { className: "loading-content" });
   content.innerHTML = `
     <div class="loading-spinner"></div>
     <h2 class="loading-text">Loading Ship<span class="loading-dots"></span></h2>
@@ -33,13 +24,10 @@ export const attachLoader = (div) => {
       <span class="loading-tip">${randomTip()}</span>
     </div>
   `;
-
   div.insertBefore(content, div.firstChild);
-
   let elapsed = 0;
   const timerEl = div.querySelector(".loading-timer");
   const tipEl = div.querySelector(".loading-tip");
-
   timerInterval = setInterval(() => {
     elapsed++;
     if (timerEl) timerEl.textContent = formatTime(elapsed);
