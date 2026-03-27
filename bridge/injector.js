@@ -1,7 +1,3 @@
-/**
- * Injects a script into the webpage context.
- * @param {string} path - The path to the script file within the extension.
- */
 export const injectPageScript = (path) => {
   const now = performance.now();
   const s = document.createElement("script");
@@ -12,10 +8,6 @@ export const injectPageScript = (path) => {
   (document.head || document.documentElement).appendChild(s);
 };
 
-/**
- * Injects a CSS file into the webpage context.
- * @param {string} path - The path to the CSS file within the extension.
- */
 export const injectPageCSS = (path) => {
   const now = performance.now();
   const link = document.createElement("link");
