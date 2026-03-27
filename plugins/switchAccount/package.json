@@ -1,10 +1,14 @@
 {
   "displayName": "Switch account",
   "id": "switchaccount",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "author": "Pshsayhi",
   "description": "Switch between your accounts!",
   "main": "index.js",
   "css": "switchAccount.css",
-  "configPath": "PLUGIN.switchaccount"
+  "configPath": "PLUGIN.switchaccount",
+  "settings": [
+    { "key": "maxAccounts", "label": "Max Accounts", "type": "number", "default": 5 }
+  ],
+  "databaseNamespace": "switchAccount"
 }

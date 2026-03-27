@@ -10,7 +10,7 @@ import {
   setSession,
   reloadGameTabs,
 } from "../accountLoader.js";
-import { createElement } from "../../../utils/elements/dom.js";
+import { createElement, addEventListener } from "../../../utils/elements/dom.js";
 
 export const createSwitchAccountBtn = async () => {
   const id = "switchAccountBtn";
@@ -208,12 +208,17 @@ export const createSwitchAccountBtn = async () => {
     }
   };
 
-  document.addEventListener("click", (e) => {
-    if (!root.contains(e.target) && !menu.contains(e.target))
-      menu.classList.remove("open");
-  });
-
-  document.body.appendChild(menu);
   root.appendChild(btn);
-  return { container: root, id, localLogoutBtn };
+  return { 
+    initMenu: () => {
+      addEventListener(document, "click", (e) => {
+        if (!root.contains(e.target) && !menu.contains(e.target))
+          menu.classList.remove("open");
+      });
+      document.body.appendChild(menu);
+    },
+    container: root, 
+    id, 
+    localLogoutBtn 
+  };
 };
