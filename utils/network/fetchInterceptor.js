@@ -31,14 +31,6 @@ window.fetch = async function (...args) {
   }
 };
 
-/**
- * Register a fetch listener.
- * @param {Object} listener 
- * @param {Function} [listener.onBeforeRequest] (url, options) => void
- * @param {Function} [listener.onResponse] (url, options, response) => void
- * @param {Function} [listener.onError] (url, options, error) => void
- * @returns {Function} Unregister function
- */
 export const addFetchListener = (listener) => {
   listeners.add(listener);
   return () => listeners.delete(listener);
