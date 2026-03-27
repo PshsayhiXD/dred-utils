@@ -1,7 +1,7 @@
 import { colors } from "../../../utils/constants.js";
 import { collectTeamPlayer } from "../../../utils/drednot.js";
 import { state, applyState } from "../state.js";
-import { qs, waitForElement, createElement, createButton, createSelect } from "../../../utils/elements/dom.js";
+import { qs, waitForElement, createElement } from "../../../utils/elements/dom.js";
 
 const debounce = (fn, t = 120) => {
   let id;
@@ -12,7 +12,7 @@ const debounce = (fn, t = 120) => {
 };
 
 const wireFilters = async (box, data) => {
-  const fOn = await waitForElement(box, "#fOn");
+  const fOn = await waitForElement({ el: box, sel: "#fOn" });
   const fRank = qs("#fRank", box);
   const fSearch = qs("#fSearch", box);
   const fHi = qs("#fHi", box);
@@ -47,12 +47,6 @@ const wireFilters = async (box, data) => {
   };
 };
 
-/**
- * Renders the Crew Overview panel.
- * @param {HTMLElement} box Container element.
- * @param {HTMLElement} tbody Crew table body.
- * @returns {{ element: HTMLElement, id: string }} Render metadata.
- */
 export const renderOverview = async (box, tbody) => {
   const data = collectTeamPlayer(tbody);
   box.replaceChildren();
@@ -78,7 +72,7 @@ export const renderOverview = async (box, tbody) => {
   const filters = createElement("div", { className: "crew-overview-filters" });
   const fOn = createElement("input", { type: "checkbox", id: "fOn" });
   filters.append(createElement("label", { append: [fOn, " Online"] }));
-  const fRank = createSelect("fRank");
+  const fRank = createElement("select", { id: "fRank" });
   ["all","owner","captain","crew","guest","banned"].forEach(v =>
     fRank.appendChild(createElement("option", { value: v, innerText: v[0].toUpperCase() + v.slice(1) }))
   );
@@ -92,7 +86,7 @@ export const renderOverview = async (box, tbody) => {
   filters.append(createElement("label", { append: [fHi, " Highlight"] }));
   const fDim = createElement("input", { type: "checkbox", id: "fDim" });
   filters.append(createElement("label", { append: [fDim, " Dim offline"] }));
-  filters.appendChild(createButton("fReset", "Reset"));
+  filters.appendChild(createElement("button", { id: "fReset", innerText: "Reset" }));
   box.append(title, grid, filters);
   await wireFilters(box, data);
   applyState(data);

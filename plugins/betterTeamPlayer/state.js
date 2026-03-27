@@ -1,20 +1,7 @@
 import { colors } from "../../utils/constants.js";
 
-/**
- * Filter and UI state for betterTeamPlayer feature.
- * @type {Object}
- * @property {boolean} online - Filter online only.
- * @property {string} rank - Filter by rank ("all","owner","captain","crew","guest","banned").
- * @property {string} search - Search term for names.
- * @property {boolean} highlight - Whether to highlight borders.
- * @property {boolean} dimOffline - Dim offline players.
- */
 export const state = { online:false, rank:"all", search:"", highlight:true, dimOffline:true };
 
-/**
- * Apply state filters to crew table rows.
- * @param {Array<Object>} data - Array of row data from collectRows().
- */
 export const applyState = (data) => {
   const s = state;
   data.forEach(d => {

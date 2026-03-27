@@ -7,26 +7,27 @@ import {
   team_manager_button,
   team_menu_crew_control_btn
 } from "../../utils/constants.js";
+import { areAll } from "../../utils/elements/dom.js";
 
 const bound = new WeakSet();
 
-const bindOverview = async btn => {
-  if (!(btn instanceof Element) || bound.has(btn)) return;
-  const handler = async () => {
-    const tbody = await team_players_inner_tbody();
-    const menu = await team_menu_container();
-    if (!tbody || !menu) return;
+const bindOverview = btn => {
+  if (!areAll([btn], Element)) return;
+  const handler = () => {
+    const tbody = team_players_inner_tbody();
+    const menu = team_menu_container();
+    if (!areAll([tbody, menu], HTMLElement)) return;
     let box = qs("#crew_overview");
     if (!box) {
       box = createElement("div", { id:"crew_overview" });
-      const inner = await team_players_inner();
+      const inner = team_players_inner();
       inner?.parentNode
         ? inner.parentNode.insertBefore(box, inner)
         : menu.appendChild(box);
     }
     renderOverview(box, tbody);
-    const crewBtn = await team_menu_crew_control_btn();
-    if (crewBtn && !bound.has(crewBtn)) bindOverview(crewBtn);
+    const crewBtn = team_menu_crew_control_btn();
+    if (typeof crewBtn === HTMLElement && !bound.has(crewBtn)) bindOverview(crewBtn);
   };
   btn.addEventListener("click", handler);
   bound.add(btn);
