@@ -1,17 +1,17 @@
 import { showJoiningOverlay, hideJoiningOverlay } from "./elements/joining.js";
 import { showToast } from "../../utils/elements/toast.js";
+import { on } from "../../bridge/pageBridge.js";
 
-
-window.addEventListener("dred:shipJoinStarted", () => {
+on("dredutils:shipJoinStarted", () => {
   showJoiningOverlay();
 });
 
-window.addEventListener("dred:shipJoined", () => {
+on("dredutils:shipJoined", () => {
   hideJoiningOverlay();
   showToast("Joined ship successfully", { type: "success" });
 });
 
-window.addEventListener("dred:shipJoinError", (e) => {
+on("dredutils:shipJoinError", (e) => {
   hideJoiningOverlay();
   showToast("Failed to join ship", { type: "error" });
   console.error("Join error:", e.detail);

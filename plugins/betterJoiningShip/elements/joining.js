@@ -1,3 +1,6 @@
+import { createElement } from "../../../utils/elements/dom.js";
+import { formatTime } from "../../../utils/helper.js";
+
 let overlay = null;
 let timerInterval = null;
 
@@ -9,21 +12,11 @@ const TIPS = [
   "Tip: Coordinate with your crew for repairs",
   "Tip: Check the MOTD for ship rules",
 ];
-
 const randomTip = () => TIPS[Math.floor(Math.random() * TIPS.length)];
-
-const formatTime = (seconds) => {
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return m > 0 ? `${m}m ${s}s` : `${s}s`;
-};
 
 export const showJoiningOverlay = () => {
   if (overlay) return;
-
-  overlay = document.createElement("div");
-  overlay.className = "joining-overlay";
-
+  overlay = createElement("div", { className: "joining-overlay" });
   overlay.innerHTML = `
     <div class="joining-content">
       <div class="joining-spinner"></div>
