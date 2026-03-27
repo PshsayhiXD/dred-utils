@@ -1,38 +1,192 @@
-.motd-backup-overlay,
-.motd-preview-overlay {
+.mb-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.6);
+  background: rgba(0, 0, 0, .6);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
 }
-.motd-backup-modal,
-.motd-preview-modal {
-  background: #111;
-  padding: 12px;
-  border-radius: 6px;
-  width: 420px;
+
+.mb-modal {
+  position: relative;
+  width: 380px;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #ccc;
+  font-family: sans-serif;
+  font-size: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .5);
+  overflow: hidden;
 }
-.motd-preview-modal {
-  width: 70%;
-  max-height: 80%;
+
+.mb-header {
+  padding: 6px 10px;
+  border-bottom: 1px solid #3a3a3a;
+  background: #222;
+  font-size: 11px;
+  color: #888;
+  letter-spacing: .05em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mb-close {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 2px;
+}
+.mb-close:hover { color: #aaa; }
+
+.mb-body {
+  padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
 }
-.motd-preview-body {
+
+.mb-list {
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid #3a3a3a;
+  border-radius: 3px;
+  background: #222;
+  scrollbar-width: thin;
+  scrollbar-color: #444 transparent;
+}
+.mb-list-empty {
+  padding: 12px;
+  color: #555;
+  font-size: 11px;
+  text-align: center;
+}
+
+.mb-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 9px;
+  cursor: pointer;
+  border-bottom: 1px solid #333;
+  transition: background .1s;
+}
+.mb-row:last-child { border-bottom: none; }
+.mb-row:hover { background: #333; }
+.mb-row.selected { background: #383838; color: #fff; }
+
+.mb-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #555;
+}
+.mb-row.selected .mb-dot { background: #bbb; }
+
+.mb-row-date {
+  font-size: 10px;
+  color: #777;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.mb-row-preview {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #aaa;
+  font-size: 11px;
+}
+.mb-row.selected .mb-row-date,
+.mb-row.selected .mb-row-preview { color: #ccc; }
+
+.mb-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.mb-btn {
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 11px;
+  padding: 4px 9px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .1s;
+  background: #484848;
+  border: 1px solid #606060;
+  color: #ddd;
+}
+.mb-btn:hover { background: #555; color: #fff; }
+
+.mb-btn-danger {
+  background: #4a2828;
+  border-color: #703030;
+  color: #e08080;
+}
+.mb-btn-danger:hover { background: #5a3030; color: #ffaaaa; }
+
+.mb-btn-success {
+  background: #2a3d2a;
+  border-color: #4a704a;
+  color: #90c890;
+}
+.mb-btn-success:hover { background: #344d34; color: #b0e8b0; }
+
+.mb-btn-info {
+  background: #28384a;
+  border-color: #305870;
+  color: #80b8e0;
+}
+.mb-btn-info:hover { background: #304858; color: #aad4f8; }
+
+.mb-divider {
+  border: none;
+  border-top: 1px solid #383838;
+}
+
+.mb-notification {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px;
+  background: #333;
+  color: #fff;
+  font-size: 11px;
+  text-align: center;
+  border-top: 1px solid #444;
+  transform: translateY(100%);
+  transition: transform .2s ease-out;
+  pointer-events: none;
+  z-index: 10;
+}
+.mb-notification.show { transform: translateY(0); }
+.mb-notification-error   { background: #5a2a2a; color: #ffaaaa; }
+.mb-notification-success { background: #2a4a2a; color: #aaffaa; }
+.mb-notification-info    { background: #2a3a4a; color: #aaccff; }
+
+.mb-preview-modal {
+  width: 60%;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+.mb-preview-body {
   flex: 1;
   overflow: auto;
   white-space: pre-wrap;
   user-select: text;
-  background: #1b1b1b;
+  background: #1e1e1e;
+  border: 1px solid #3a3a3a;
+  border-radius: 3px;
   padding: 8px;
-}
-.motd-backup-modal,
-.motd-preview-modal,
-.motd-backup-modal *,
-.motd-preview-modal * {
-  color: #e6e6e6;
+  font-size: 12px;
+  color: #ccc;
+  margin: 0;
 }

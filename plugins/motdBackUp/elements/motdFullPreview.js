@@ -1,21 +1,27 @@
-import { createElement, addCloseButton } from "../../../utils/elements/dom.js";
+import { createElement } from "../../../utils/elements/dom.js";
 
-/**
- * Opens a full preview modal for MOTD content.
- * @param {string} content Full MOTD text.
- * @returns {void} Displays preview modal.
- */
 export const openMotdFullPreview = content => {
-  const overlay = createElement("div", { className: "motd-preview-overlay" });
-  const modal = createElement("div", { className: "motd-preview-modal" });
-  const body = createElement("pre", {
-    className: "motd-preview-body",
-    innerText: content
+  const overlay = createElement("div", { className: "mb-overlay" });
+  const modal = createElement("div", { className: "mb-modal mb-preview-modal" });
+  const closeBtn = createElement("button", { className: "mb-close", textContent: "✕" });
+  const header = createElement("div", {
+    className: "mb-header",
+    append: [
+      createElement("span", { textContent: "PREVIEW" }),
+      closeBtn,
+    ],
   });
-
+  closeBtn.onclick = () => overlay.remove();
+  const body = createElement("div", { className: "mb-body" });
+  const pre = createElement("pre", {
+    className: "mb-preview-body",
+    innerText: content,
+  });
+  body.appendChild(pre);
+  modal.append(header, body);
   overlay.appendChild(modal);
-  modal.appendChild(body);
   document.body.appendChild(overlay);
-
-  addCloseButton(modal, () => overlay.remove());
+  overlay.addEventListener("click", e => {
+    if (e.target === overlay) overlay.remove();
+  });
 };

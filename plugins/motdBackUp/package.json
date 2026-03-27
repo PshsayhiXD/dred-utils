@@ -1,10 +1,14 @@
 {
   "displayName": "Motd Backup",
   "id": "motdbackup",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Pshsayhi",
   "description": "Adds save/load For motd!",
   "main": "index.js",
   "configPath": "PLUGIN.motdbackup",
-  "css": "motdBackup.css"
+  "css": "motdBackup.css",
+  "settings": [
+    { "key": "autosave", "label": "Auto-save on MOTD change", "type": "checkbox", "default": false }
+  ],
+  "databaseNamespace": "motdBackup"
 }
