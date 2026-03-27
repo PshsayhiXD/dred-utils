@@ -1,0 +1,8 @@
+{
+  "displayName": "Social Network",
+  "id": "socialnetwork",
+  "version": "1.0.0",
+  "description": "Social Network",
+  "configPath": "PLUGIN.socialnetwork",
+  "author": "Pshsayhi"
+}
