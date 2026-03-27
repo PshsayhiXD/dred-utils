@@ -1,9 +1,9 @@
-import { addListener } from "../../bridge/pageBridge.js";
+import { on } from "../../bridge/pageBridge.js";
 import { getLatestChat } from "../../utils/drednot.js";
 import { createChatTimestamp } from "./elements/timestamp.js";
 
-addListener("domMutated", async () => {
-  const { element: chat } = await getLatestChat();
+on("dredutils:domMutated", () => {
+  const { element: chat } = getLatestChat();
   if (!chat) return;
   if (!chat.dataset.tsApplied) {
     const { timestampEl } = createChatTimestamp();
