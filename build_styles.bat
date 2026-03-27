@@ -1,2 +1,0 @@
-@echo off
-cmd /k "esbuild index.css --bundle --minify --outfile=dist/content.css && esbuild fontawesome.css --bundle --minify --outfile=dist/fontawesome.css --loader:.woff2=file --asset-names=webfonts/[name] && echo. && echo Build finished."
