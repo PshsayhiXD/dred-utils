@@ -1,0 +1,9 @@
+{
+  "displayName": "Chat To",
+  "id": "chatto",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Chat to a specified target (the target must have this extension installed)",
+  "main": "index.js",
+  "configPath": "PLUGIN.chatto"
+}
