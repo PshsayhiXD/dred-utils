@@ -1,42 +1,20 @@
+import { are } from "./elements/dom.js";
+
 const boundEls = new WeakSet();
 
-/**
- * Binds a click event listener to an element only once.
- * Prevents duplicate bindings by tracking elements in a WeakSet.
- * @param {Element} el The DOM element to bind the event listener to.
- * @param {Function} fn The function to invoke when the element is clicked.
- * @returns {void} Does nothing if the element is invalid or already bound.
- */
 export const bindOnce = (el, fn) => {
-  if (!(el instanceof Element) || boundEls.has(el)) return;
+  if (!are(el, Element) || boundEls.has(el)) return;
   el.addEventListener("click", fn);
   boundEls.add(el);
 };
 
-/**
- * Resolve a dot-path value from an object.
- * @param {Object} obj The source object.
- * @param {string} path The dot-path string.
- * @returns {any} The resolved value or undefined.
- */
 export const getByPath = (obj, path) => {
   return path.split(".").reduce((acc, key) => acc?.[key], obj);
 };
 
-/**
- * Truncates text to a maximum length.
- * @param {string} text The input text.
- * @param {number} max The maximum length.
- * @returns {string} The truncated string.
- */
 export const truncateText = (text, max) =>
   text.length > max ? `${text.slice(0, max)}...` : text;
 
-/**
- * Converts supported letters and digits to stable Unicode modifier-letter.
- * @param {string} value The input string to convert.
- * @returns {Promise<string>} The modifier-letter–converted string.
- */
 export const toModifier = value => {
   const map = {
     "0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹",
@@ -47,13 +25,6 @@ export const toModifier = value => {
   return value.replace(/[0-9a-z]/gi, c => map[c.toLowerCase()] || c);
 };
 
-/**
- * Builds a single-line Unicode reply string with safe truncation.
- * @param {string} username The username being replied to.
- * @param {string|null} senderContent The original message content being replied to.
- * @param {string} content The normal message content.
- * @returns {Promise<string>} A single-line Unicode-formatted reply message.
- */
 export const convertReplyContent = (username, senderContent, content) => {
   const user = username.trim().replace(/\s+/g, " ").slice(0, 24);
   const rawSrc = senderContent ? senderContent.trim().replace(/\s+/g, " ") : "";
@@ -63,11 +34,12 @@ export const convertReplyContent = (username, senderContent, content) => {
   return head + content;
 };
 
-/**
- * Convert time string to seconds.
- * @param {string} timeStr - Format "MM:SS" or "HH:MM:SS".
- * @returns {number} - Total seconds.
- */
+export const formatTime = (seconds) => {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return m > 0 ? `${m}m ${s}s` : `${s}s`;
+};
+
 export const toSec = (timeStr) => {
   const parts = timeStr.split(":").map(Number);
   return parts.length === 3
