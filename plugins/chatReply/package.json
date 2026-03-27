@@ -1,7 +1,7 @@
 {
   "displayName": "Chat Reply",
   "id": "chatreply",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Pshsayhi",
   "description": "Adds a reply button to chat messages.",
   "main": "index.js",

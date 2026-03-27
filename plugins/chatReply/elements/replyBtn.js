@@ -3,10 +3,6 @@ import { chat_input } from "../../../utils/constants.js";
 import { convertReplyContent } from "../../../utils/helper.js";
 import { extractChatUsername, extractChatMessage } from "../../../utils/drednot.js";
 
-/**
- * Creates a reply button with its click handler.
- * @returns {{ replyBtn: HTMLButtonElement, className: string }} The button element and its class name.
- */
 export const createReplyButton = () => {
   const className = "replyBtn";
   const replyBtn = createElement("button", {
