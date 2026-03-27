@@ -1,0 +1,9 @@
+{
+  "displayName": "Better Disconnection Popup",
+  "id": "betterdisconnetionpopup",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Better disconnection popup.",
+  "main": "index.js",
+  "configPath": "PLUGIN.betterdisconnetionpopup"
+}
