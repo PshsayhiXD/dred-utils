@@ -12,7 +12,7 @@ export const canvas = document.getElementById("canvas-game");
 export const station_ui_container = window_container.querySelector("#station-ui");
 export const pui_container = window_container.querySelector("#pui");
 export const item_ui_container = document.getElementById("item-ui-container");
-export const disconnect_pop_up = () => window_container.querySelector(".disconnect-popup") || ".disconnect-popup";
+export const disconnect_pop_up = () => window_container.querySelector("#disconnect-popup") || "#disconnect-popup";
 export const content_bottom = document.getElementById("content-bottom");
 export const button_container = content_bottom.querySelector(".button-container");
 export const container_right = content_bottom.querySelector(".container-right");
@@ -101,8 +101,22 @@ export const team_players = () =>
 export const team_log = () =>
   team_players()?.querySelector("#team_log") || "team_log";
 
+export const team_input = () =>
+  team_players()?.querySelector("input") || null;
+
 export const team_players_inner = () =>
   team_players()?.querySelector("#team_players_inner") || "team_players_inner";
+
+export const team_players_inner_meme_btn = (side) => {
+  if (!["up", "down", "left", "right"].includes(side)) return false;
+  if (team_input().value !== "coolsnake303") return false;
+  return team_players_inner()?.querySelector(`button.btn-meme i.fa-arrow-${side}`) || `button.btn-meme i.fa-arrow-${side}`;
+};
+
+export const team_players_inner_meme_btns = () => {
+  if (team_input().value !== "coolsnake303") return [];
+  return team_players_inner()?.querySelectorAll("button.btn-meme") || [];
+};
 
 export const team_players_inner_codes = () =>
   team_players_inner()?.querySelectorAll("td > code") || [];
@@ -150,8 +164,3 @@ export const ship_list_ship_input = () => ship_list_p1().querySelector("input") 
 //        ALIASES
 // =======================
 export const ui_container_left = window_ui_left_container;
-export const team_button = team_manager_button;
-export const team_players_container = team_menu_container;
-export const team_menu_inner = team_players_inner;
-export const team_menu_inner_codes = team_players_inner_codes;
-export const team_menu_inner_tbody = team_players_inner_tbody;
