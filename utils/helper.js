@@ -46,3 +46,13 @@ export const toSec = (timeStr) => {
     ? parts[0] * 3600 + parts[1] * 60 + parts[2]
     : parts[0] * 60 + parts[1];
 };
+
+export const debounce = (fn, t = 120) => {
+  let id;
+  return (v) => {
+    clearTimeout(id);
+    id = setTimeout(() => fn(v), t);
+  };
+};
+
+export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
