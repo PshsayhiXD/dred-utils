@@ -1,7 +1,7 @@
 {
   "displayName": "Better Team Player",
   "id": "betterteamplayer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Pshsayhi",
   "description": "Bored of the old team menu?",
   "main": "index.js",
