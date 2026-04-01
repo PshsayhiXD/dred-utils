@@ -6,9 +6,21 @@ import {
   server_select,
   chat_container,
   chat_input,
+  chat_send_btn,
   chat_close,
+  team_input,
+  team_players_inner,
+  team_players_inner_meme_btn,
+  team_menu_container,
 } from "./constants.js";
-import { toSec } from "./helper.js";
+import { 
+  inputKeys, 
+  dispatchInputEvent, 
+  dispatchEvent, 
+  pressBtn
+} from "./elements/keyboard.js";
+import { waitForElement } from "./elements/dom.js";
+import { toSec, sleep } from "./helper.js";
 import { qsa, qs, are } from "./elements/dom.js";
 
 /* 
@@ -46,6 +58,43 @@ export const isClientRegistered = async () =>
   ===== FROM SIMPLE DREDDARK API =====
   https://github.com/PshsayhiXD/Simple-Dreddark-API
 */
+
+
+export const gravity = async (side, silent = false) => {
+  const input = team_input();
+  if (!are(input, HTMLInputElement)) return;
+  const team = team_menu_container();
+  if (!are(team, HTMLElement)) return;
+  if (silent) {
+    team.style.display = "none";
+  }
+  const clearInput = (input) => {
+    input.value = "";
+    dispatchInputEvent({ input, events: ["input", "change"] });
+  };
+  clearInput(input);
+  input.focus();
+  let inputValue;
+  let maxTry = 10;
+  const tryInput = async () => {
+    inputValue = await inputKeys({ input, key: "coolsnake303", method: "focus" });
+    if (inputValue === "coolsnake303") return inputValue;
+    if (maxTry <= 0) return false;
+    maxTry--;
+    return tryInput();
+  }
+  await tryInput();
+  const root = team_players_inner();
+  if (!are(root, HTMLElement)) return;
+  const memeBtn = await waitForElement({
+    el: root,
+    sel: team_players_inner_meme_btn(side),
+  });
+  if (!are(memeBtn, HTMLElement)) return;
+  dispatchEvent({ el: memeBtn, events: ["click"] });
+  setTimeout(() => clearInput(input), 80);
+  return true;
+};
 
 export const getAllUserFromChat = () => {
   const usernames = [];
@@ -118,6 +167,7 @@ export const extractChatBadges = (messageEl) =>
 export const extractChatMessage = (messageEl) => {
   if (!messageEl) return null;
   const clone = messageEl.cloneNode(true);
+  if (qs("i", clone)) return qs("i", clone).textContent.trim();
   qsa("b, bdi, span, .user-badge-small, .replyBtn", clone).forEach((n) =>
     n.remove(),
   );
@@ -126,10 +176,10 @@ export const extractChatMessage = (messageEl) => {
   return text.startsWith(":") ? text.slice(1).trim() : text;
 };
 
-export const getLatestChat = () => {
+export const getLatestChat = (pastIndex) => {
   const chatContent = chat_content();
   if (!chatContent) return null;
-  const latestChat = chatContent.lastElementChild;
+  const latestChat = pastIndex ? chatContent.children[pastIndex] : chatContent.lastElementChild;
   if (!latestChat) return null;
   return {
     element: latestChat,
@@ -138,6 +188,49 @@ export const getLatestChat = () => {
     badges: extractChatBadges(latestChat),
     message: extractChatMessage(latestChat),
   };
+};
+
+let chatQueue = [];
+let isSendingChat = false;
+let lastChatAt = 0;
+const processChatQueue = async () => {
+  if (isSendingChat) return false;
+  isSendingChat = true;
+  while (chatQueue.length > 0) {
+    const finalMessage = chatQueue.shift();
+    if (!finalMessage) continue;
+    const waitMs = Math.max(0, 2000 - (Date.now() - lastChatAt));
+    if (waitMs > 0) await sleep(waitMs);
+    const input = chat_input();
+    if (!are(input, HTMLInputElement)) continue;
+    const chat = chat_container();
+    if (!are(chat, HTMLElement)) continue;
+    const isClosed = chat.classList.contains("closed");
+    if (isClosed) chat.classList.remove("closed");
+    input.focus();
+    input.value = finalMessage;
+    const sendBtn = chat_send_btn();
+    if (!are(sendBtn, HTMLElement)) continue;
+    sendBtn.click();
+    lastChatAt = Date.now();
+  }
+  isSendingChat = false;
+  return true;
+};
+export const sendChat = async (...message) => {
+  if (message.length === 0) return false;
+  const finalMessage = message.join(" ").trim();
+  if (!finalMessage) return false;
+  chatQueue.push(finalMessage);
+  processChatQueue();
+  return true;
+};
+window.sendChat = sendChat;
+
+export const isCurrentPlayerCaptain = async () => {
+  await sendChat("/kick ");
+  const chat = getLatestChat(7);
+  return chat?.message === "You don't have permission to do that.";
 };
 
 export const getAllChatMessage = () => {
@@ -156,26 +249,29 @@ export const collectTeamPlayer = (tbody) =>
   qsa("tr", tbody).map((r) => {
     r.style.fontSize = "15px";
     const td = r.children;
-    const name = td[1]?.textContent.split("\n")[0] || "";
+    const infoTd = td[1];
+    const actionTd = td[4];
+    const name = qs("code", infoTd)?.textContent.trim() || "";
     const online = td[0]?.textContent.trim() === "1";
-    const play = toSec(td[3]?.textContent || "0:00");
-    const identityText = td[1]?.textContent.toLowerCase() || "";
-    const actionText = td[4]?.textContent.toLowerCase() || "";
-    const banned = actionText.includes("banned");
-    const owner = identityText.includes("ship owner");
+    const play = toSec(td[3]?.textContent.trim() || "0:00");
+    const infoText = infoTd?.textContent.toLowerCase() || "";
+    const owner = infoText.includes("ship owner");
+    const aliasBanned = infoText.includes("[banned]");
+    const banned = !!qs("b", actionTd)?.textContent.match(/banned/i);
     let captainLevel = 0;
-    const capMatch = actionText.match(/captain\s*\[(\d+)\]/i);
+    let rank = "guest";
+    const rankBold = qs("b", actionTd)?.textContent.trim() || "";
+    const rankSelect = qs("select", actionTd);
+    const capMatch = rankBold.match(/captain\s*\[(\d+)\]/i);
     if (capMatch) captainLevel = Number(capMatch[1]);
-    const rank = banned
-      ? "banned"
-      : owner
-        ? "owner"
-        : actionText.includes("captain")
-          ? "captain"
-          : actionText.includes("crew")
-            ? "crew"
-            : "guest";
-    return { r, name, online, play, rank, banned, owner, captainLevel };
+    if (banned) rank = "banned";
+    else if (owner) rank = "owner";
+    else if (capMatch) rank = "captain";
+    else if (rankSelect) {
+      const val = rankSelect.value;
+      rank = val === "3" ? "captain" : val === "1" ? "crew" : "guest";
+    }
+    return { r, name, online, play, rank, banned, owner, captainLevel, aliasBanned };
   });
 
 export const isDuplicatedText = (text) => {
