@@ -9,7 +9,9 @@ import { getNamespacedFiles } from "./storage/OPFS.js";
 import { waitForElement } from "./utils/elements/dom.js";
 import { dispatch, onDispatch } from "./bridge/pageBridge.js";
 import { loadPlugins, PLUGIN_LIST } from "./utils/plugins.js";
+import { addEventListenerInterceptor } from "./utils/elements/addEventListenerInterceptor.js";
 
+addEventListenerInterceptor();
 await loadPlugins(PLUGIN_LIST());
 await new Promise((resolve) => onDispatch("dredutils:pluginsReady", resolve));
 
