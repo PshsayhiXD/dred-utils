@@ -1,0 +1,9 @@
+{
+  "displayName": "Better Gravity Control",
+  "id": "bettergravitycontrol",
+  "version": "1.0.0",
+  "author": "Pshsayhi",
+  "description": "Better gravity control.",
+  "main": "index.js",
+  "configPath": "PLUGIN.bettergravitycontrol"
+}
