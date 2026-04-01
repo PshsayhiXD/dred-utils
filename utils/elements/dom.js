@@ -1,3 +1,5 @@
+import { getTrackedListeners } from "./addEventListenerInterceptor.js";
+
 const pathCache = new WeakMap();
 
 export const qs = (selector, root=document) => root.querySelector(selector);
@@ -70,6 +72,11 @@ export const createElement = (tag, options = {}) => {
   return el;
 };
 
+export const isFocusAnyInput = (el) =>
+  el instanceof HTMLInputElement ||
+  el instanceof HTMLTextAreaElement ||
+  el?.isContentEditable === true;
+
 export const addEventListener = (el, event, handler) => el.addEventListener(event, handler);
 
 export const getPath = el => {
@@ -96,6 +103,21 @@ export const getPath = el => {
 export const getParentPath = el => {
   const p = el && (el.parentElement || el.parentNode);
   return are(p, Element) ? getPath(p) : null;
+};
+
+export const bindForeverOnce = (el, event, handler, opt) => {
+  if (!(el instanceof EventTarget) || typeof handler !== "function") return null;
+  const has = getTrackedListeners(el).some((l) =>
+    l.type === event && (l.fn === handler || l.fn?._handler === handler)
+  );
+  if (has) return null;
+  const wrapper = (...args) => {
+    handler(...args);
+    el.removeEventListener(event, wrapper, opt);
+  };
+  wrapper._handler = handler;
+  el.addEventListener(event, wrapper, opt);
+  return wrapper;
 };
 
 export const captureCanvas = (
