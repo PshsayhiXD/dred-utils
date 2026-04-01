@@ -6,6 +6,12 @@ import { are } from "../../utils/elements/dom.js";
 
 let wasLoading = false;
 
+const handleSkip = (div) => {
+  showToast("Ship loaded", { type: "success" });
+  wasLoading = false;
+  detachLoader(div);
+};
+
 onDispatch("dredutils:shipyardShips", () => {
   const div = shipyard_loading();
   if (!are(div, HTMLElement)) return;
@@ -17,12 +23,16 @@ onDispatch("dredutils:shipyardShips", () => {
     detachLoader(div);
   } else {
     wasLoading = true;
-    attachLoader(div);
+    attachLoader(div, () => handleSkip(div));
   }
 });
 
 const initialDiv = shipyard_loading();
 if (are(initialDiv, HTMLElement)) {
-  attachLoader(initialDiv);
-  if (initialDiv.style.display !== "none") wasLoading = true;
+  if (initialDiv.style.display !== "none") {
+    wasLoading = true;
+    attachLoader(initialDiv, () => handleSkip(initialDiv));
+  } else {
+    attachLoader(initialDiv);
+  }
 }
